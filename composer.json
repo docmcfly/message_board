@@ -1,0 +1,25 @@
+{
+	"name" : "cylancer/message_board",
+	"type" : "typo3-cms-extension",
+	"description" : "A simple message board for the fe user",
+	"authors" : [{
+			"name" : "Clemens Gogolin",
+			"role" : "Developer"
+		}, {
+			"name" : "Clemens Gogolin",
+			"role" : "Product Manager"
+		}
+	],
+	"require" : {
+		"typo3/cms-core" : "^11.5"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Cylancer\\MessageBoard\\" : "Classes"
+		}
+	},
+	"replace" : {
+		"cylancer/message-board" : "self.version"
+	},
+	"minimum-stability" : "dev"
+}
