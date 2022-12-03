@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-04-20T10:30:35Z" product-name="message-board">
+		<header />
+		<body>
+			<trans-unit id="messageboard.form.update.submit">
+				<source>↺</source>
+				<target state="tanslated">↺</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.update.submit.title">
+				<source>Update</source>
+				<target state="tanslated">Aktualisieren</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.create.submit">
+				<source>+</source>
+				<target state="tanslated">+</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.create.submit.title">
+				<source>Add</source>
+				<target state="tanslated">Hinzufügen</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.remove.submit">
+				<source>∅</source>
+				<target state="tanslated">∅</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.remove.submit.title">
+				<source>Remove</source>
+				<target state="tanslated">Entfernen</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.ownMessage.create">
+				<source>Create a new message</source>
+				<target state="tanslated">Neue Nachricht veröffentichen</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.ownMessage.editOrDelete">
+				<source>Edit or delete the public message</source>
+				<target state="tanslated">Die veröffentlichte Nachricht bearbeiten oder löschen:</target>
+			</trans-unit>
+			
+			
+			<trans-unit id="messageBoard.settings.title">
+				<source>Setting of the message board</source>
+				<target>Einstellung - Anschlagtafel</target>
+			</trans-unit>
+			<trans-unit id="messageBoard.settings.form.infoMailWhenMessageBoardChanged">
+				<source>Sends an email if the message board is changed.</source>
+				<target>Sendet eine Benachtigungs-E-Mail, wenn die Anschlagtafel verändert wurde.</target>
+			</trans-unit>
+			<trans-unit id="messageBoard.settings.form.infoMailWhenMessageBoardChanged.hint">
+				<source>Info mail contains only add or change information.</source>
+				<target>Über folgende Änderungen wird man informiert: 
+				a) Wenn eine neue Meldung auf der Anschlagtafel veröffentlicht wurde.
+				b) Wenn eine bestehende Meldung verändert wurde.</target>
+			</trans-unit>
+			<trans-unit id="messageBoard.settings.form.submit">
+				<source>Save</source>
+				<target>Speichern</target>
+			</trans-unit>
+
+			<trans-unit id="messageBoard.settings.error.notLoggedIn">
+				<source>You are not logged in.</source>
+				<target>Sie sind nicht eingeloggt.</target>
+			</trans-unit>
+			
+			
+			<trans-unit id="task.messageBoardInformation.title">
+				<source>Message board change informater</source>
+				<target>Schwarzes Brett Änderungsmelder</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.description">
+				<source>Informs the user if the message board is changed.</source>
+				<target>Informiert die Nutzer, wenn das Schwarze Brett aktualisiert wurde.</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.messageBoardStorageUid">
+				<source>The message board storage uid:</source>
+				<target>Speicherort der Einträge:</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.invalidPage.messageBoardStorageUid">
+				<source>The specified message board storage uid is not a valid page.</source>
+				<target>Der angegebene Speicherort der Einträge ist kein gültige Seite. </target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.hint.title">
+				<source>Hint</source>
+				<target>Hinweis</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.hint.text">
+				<source>This task needs frontend users. This task takes all frontend users from folders with a marker: "Contains plugin: Website user" (module).</source>
+				<target>Diese Aufgabe verwendet Website-Benutzer. Die Nutzer werden aus den Ordner bezogen, bei denen der Marker "Enthält Plug-In: Website-Benutzer" [module] tragen.</target>
+			</trans-unit>
+
+			
+			<trans-unit id="task.messageBoardInformation.infoMail.subject">
+				<source>Message board update</source>
+				<target>Neues auf dem Schwarzen Brett</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.salutation">
+				<source>Hello %s</source>
+				<target>Hallo %s</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.teaser">
+				<source>On the message exists a new message or a exist message is updated.</source>
+				<target>Jemand hat auf dem Schwarzen Brett etwas Neues veröffentlicht oder seine bestehende Nachricht geändert.</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.body">
+				<source></source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.footer">
+				<source>Best regards, 
+your webmaster</source>
+				<target>Schöne Grüße
+Dein Webmaster</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.updateMail.senderName">
+				<source>Informer service</source>
+				<target>Informationsservice</target>
+			</trans-unit>
+			
+			
+			
+		</body>
+	</file>
+</xliff>

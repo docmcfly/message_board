@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-04-20T10:30:35Z" product-name="message-board">
+		<header />
+		<body>
+			<trans-unit id="messageboard.form.update.submit">
+				<source>↺</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.update.submit.title">
+				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.create.submit">
+				<source>+</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.create.submit.title">
+				<source>Add</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.remove.submit">
+				<source>∅</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.remove.submit.title">
+				<source>Remove</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.ownMessage.create">
+				<source>Create a new message</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.ownMessage.editOrDelete">
+				<source>Edit or delete the public message</source>
+			</trans-unit>
+			
+			
+			<trans-unit id="messageBoard.settings.title">
+				<source>Setting of the message board</source>
+			</trans-unit>
+			<trans-unit id="messageBoard.settings.form.infoMailWhenMessageBoardChanged">
+				<source>Sends an email if the message board is changed.</source>
+			</trans-unit>
+			<trans-unit id="messageBoard.settings.form.infoMailWhenMessageBoardChanged.hint">
+				<source>Info mail contains only add or change information.</source>
+			</trans-unit>
+			<trans-unit id="messageBoard.settings.form.submit">
+				<source>Save</source>
+			</trans-unit>
+
+			<trans-unit id="messageBoard.settings.error.notLoggedIn">
+				<source>You are not logged in.</source>
+			</trans-unit>
+			
+			 
+			<trans-unit id="task.messageBoardInformation.title">
+				<source>Message board change informater</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.description">
+				<source>Informs the user if the message board is changed.</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.messageBoardStorageUid">
+				<source>The message board storage uid:</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.invalidPage.messageBoardStorageUid">
+				<source>The specified message board storage uid is not a valid page.</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.hint.title">
+				<source>Hint</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.hint.text">
+				<source>This task needs frontend users. This task takes all frontend users from folders with a marker: "Contains plugin: Website user" (module).</source>
+			</trans-unit>
+
+			
+			<trans-unit id="task.messageBoardInformation.infoMail.subject">
+				<source>Message board update</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.salutation">
+				<source>Hello %s</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.teaser">
+				<source>On the message exists a new message or a exist message is updated.</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.body">
+				<source></source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.infoMail.footer">
+				<source>Best regards, 
+your webmaster</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.updateMail.senderName">
+				<source>Informer service</source>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>

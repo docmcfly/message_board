@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<f:layout name="Default"/>
+<f:section name="content"><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" />
+
+<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser" />
+
+<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.body" />
+
+<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.footer" />
+ 
+<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.regards" />
+</f:section>
+</body></html>
+
+

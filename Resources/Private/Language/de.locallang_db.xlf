@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-04-20T10:30:35Z" product-name="message-board">
+		<header />
+		<body>
+			<trans-unit id="tx_messageboard_domain_model_message">
+				<source>Message of a frontend user</source>
+				<target state="tanslated">Nachricht eine:r Webseitennutzer:in</target>
+			</trans-unit>
+			<trans-unit id="tx_messageboard_domain_model_message.user">
+				<source>Frontend user</source>
+				<target state="tanslated">Webseitennutzer:in</target>
+			</trans-unit>
+			<trans-unit id="tx_messageboard_domain_model_message.text">
+				<source>Message text</source>
+				<target state="tanslated">Nachrichtentext</target>
+			</trans-unit>
+			<trans-unit id="tx_messageboard_board.name">
+				<source>Message board</source>
+				<target state="tanslated">Schwarzes Brett</target>
+			</trans-unit>
+			<trans-unit id="tx_messageboard_board.description">
+				<source>The fe users can publish a message for other fe users.</source>
+				<target state="tanslated">Webseiten-Nutzer können kleine Nachrichten veröffentlichen.</target>
+			</trans-unit>
+			<trans-unit id="tx_messageBoard_domain_model_user.info_mail_when_message_board_changed">
+				<source>Send a info mail when the message board is changed.</source>
+				<target state="tanslated">Soll eine Info-E-Mail versandt werden, wenn es Änderungen auf der Anschlagtafel vorgenommen wurden.</target>
+			</trans-unit>
+			<trans-unit id="tx_messageBoard_domain_model_user.tab_settings">
+				<source>Message board</source>
+				<target state="tanslated">Anschlagtafel</target>
+			</trans-unit>
+			<trans-unit id="tx_messageBoard_domain_model_user.tx_extbase_type">
+				<source>Message board</source>
+				<target state="tanslated">Anschlagtafel</target>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>

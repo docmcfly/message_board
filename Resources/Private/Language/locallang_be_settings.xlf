@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-03-18T15:36:48Z" product-name="participants">
+		<header/>
+		<body>
+			<trans-unit id="plugin.name">
+				<source>Plugin for the user message board settings</source>
+			</trans-unit>
+			<trans-unit id="plugin.description">
+				<source>With this plugin the user can set the proteries of the message board.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

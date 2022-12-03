@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//WC//DTD XHTML . Strict//EN"
+	"http://www.w.org/TR/xhtml/DTD/xhtml-strict.dtd">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:c="http://typo3.org/ns/Cylancer/Participants/ViewHelpers"
+	data-namespace-typo3-fluid="true" xmlns="http://www.w.org//xhtml" xml:lang="en" lang="en"
+>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</head>
+<body>
+	<f:layout name="Default" />
+	<f:section name="content">
+		<f:format.htmlentitiesDecode>{specialForcesColor}</f:format.htmlentitiesDecode>
+		<div class="card profile messageBoard settings">
+			<f:security.ifAuthenticated>
+				<f:then>
+					<f:render section="authenticated" arguments="{_all}" />
+				</f:then>
+				<f:else>
+					<f:render section="nonauthenticated" arguments="{_all}" />
+				</f:else>
+			</f:security.ifAuthenticated>
+		</div>
+	</f:section>
+	<f:section name="authenticated">
+		<div class="card-body">
+			<h4 class="card-title">
+				<f:translate key="messageBoard.settings.title" />
+			</h4>
+			<f:form action="save" name="settings" object="{settings}" enctype="multipart/form-data">
+				<div class="form-check">
+					<f:form.checkbox id="infoMailWhenMessageBoardChanged" property="infoMailWhenMessageBoardChanged" value="someValue" class="form-check-input" />
+					&nbsp;&nbsp;&nbsp; <label for="infoMailWhenPersonalDutyRosterChanged"><f:format.nl2br><f:translate key="messageBoard.settings.form.infoMailWhenMessageBoardChanged" /></f:format.nl2br></label>
+					<details><f:format.nl2br><f:translate key="messageBoard.settings.form.infoMailWhenMessageBoardChanged.hint" /></f:format.nl2br></details>
+				</div>
+				<div class="form-check" style="margin-top:1rem;">
+					<f:form.submit class="btn btn-primary btn-lg" value="{f:translate(key: 'messageBoard.settings.form.submit')}" />
+				</div>
+			</f:form>
+		</div>
+	</f:section>
+	<f:section name="nonauthenticated">
+		<div class="card-body">
+			<div class="card-text">
+				<f:translate key="messageBoard.settings.error.notLoggedIn" />
+			</div>
+		</div>
+	</f:section>
+</body>
+</html>
