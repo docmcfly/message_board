@@ -1,15 +1,8 @@
 {
 	"name" : "cylancer/message_board",
 	"type" : "typo3-cms-extension",
-	"description" : "A simple message board for the fe user",
-	"authors" : [{
-			"name" : "Clemens Gogolin",
-			"role" : "Developer"
-		}, {
-			"name" : "Clemens Gogolin",
-			"role" : "Product Manager"
-		}
-	],
+	"description" : "A simple front end user message board.",
+	"license" : "GPL-2.0-or-later",
 	"require" : {
 		"typo3/cms-core" : "^11.5"
 	},
@@ -18,8 +11,20 @@
 			"Cylancer\\MessageBoard\\" : "Classes"
 		}
 	},
-	"replace" : {
-		"cylancer/message-board" : "self.version"
+	"authors" : [{
+			"name" : "Clemens Gogolin",
+			"email" : "service@cylancer.net",
+			"role" : "developer",
+			"homepage" : "https://github.com/docmcfly/message_board"
+		}
+	],
+	"support" : {
+		"issues" : "https://github.com/docmcfly/message_board/issues",
+		"source" : "https://github.com/docmcfly/message_board"
 	},
-	"minimum-stability" : "dev"
+	"extra" : {
+		"typo3/cms" : {
+			"extension-key" : "messageboard"
+		}
+	}
 }
