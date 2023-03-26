@@ -36,7 +36,6 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      
         if ($this->frontendUserService->isLogged()) {
             /**
-             *
              * @var Message $currentUserMessage
              */
             $currentUser = $this->frontendUserService->getCurrentUser();
@@ -45,7 +44,6 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $currentUserMessage = null;
             $isCurrentUserMessagePersistent = true;
             /**
-             *
              * @var Message $msg
              */
             foreach ($this->messageRepository->findAll() as $msg) {
@@ -61,7 +59,7 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $currentUserMessage->setUser($currentUser);
                 $currentUserMessage->setTimestamp(new \DateTime());
             }
-
+            
             $this->view->assign('isCurrentUserMessagePersistent', $isCurrentUserMessagePersistent);
             $this->view->assign('currentUserMessage', $currentUserMessage);
             $this->view->assign('messages', $messages);
