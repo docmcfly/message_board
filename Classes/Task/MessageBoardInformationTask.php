@@ -135,6 +135,7 @@ class MessageBoardInformationTask extends AbstractTask
              * @var FrontendUser $user
              * @var Message $messeage
              */
+            // Attation: ->findByInfoMailWhenMessageBoardChanged() <- is "magic" method.
             foreach ($this->frontendUserRepository->findByInfoMailWhenMessageBoardChanged(true) as $user) {
                 if (! empty($user->getEmail())) {
                     $users[] = $user;
@@ -168,7 +169,7 @@ class MessageBoardInformationTask extends AbstractTask
                 $user->getEmail() => $user->getFirstName() . ' ' . $user->getLastName()
             ];
             $sender = [
-                MailUtility::getSystemFromAddress() => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('task.messageBoardInformation.updateMail.senderName', MessageBoardInformationTask::EXTENSION_NAME)
+                MailUtility::getSystemFromAddress() => LocalizationUtility::translate('task.messageBoardInformation.updateMail.senderName', MessageBoardInformationTask::EXTENSION_NAME)
             ];
             $subject = LocalizationUtility::translate('task.messageBoardInformation.infoMail.subject', MessageBoardInformationTask::EXTENSION_NAME);
 
@@ -183,7 +184,7 @@ class MessageBoardInformationTask extends AbstractTask
     /**
      * This method returns the sleep duration as additional information
      *
-     * @return String Information to display
+     * @return string Information to display
      */
     public function getAdditionalInformation(): String
     {
@@ -192,9 +193,9 @@ class MessageBoardInformationTask extends AbstractTask
 
     /**
      *
-     * @param String $key
+     * @param string $key
      * @throws \Exception
-     * @return number|String
+     * @return number|string
      */
     public function get(String $key)
     {
@@ -208,8 +209,8 @@ class MessageBoardInformationTask extends AbstractTask
 
     /**
      *
-     * @param String $key
-     * @param String|number $value
+     * @param string $key
+     * @param string|number $value
      * @throws \Exception
      */
     public function set(String $key, $value)

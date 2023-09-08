@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = [
     'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => true,
-    'version' => '1.1.9',
+    'version' => '2.0.0',
     'constraints' => [
         'depends' => [
             'typo3' => '10.4.0-11.5.99',
@@ -29,3 +29,8 @@ $EM_CONF[$_EXTKEY] = [
         'suggests' => [],
     ],
 ];
+
+
+/* CHANGLOG: 
+      2.0.0 :: Fix the plugin registration/configuration.
+ */
