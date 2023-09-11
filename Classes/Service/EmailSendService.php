@@ -27,7 +27,7 @@ class EmailSendService implements SingletonInterface
      *            recipient of the email in the format array('recipient@domain.tld' => 'Recipient Name')
      * @param array $sender
      *            sender of the email in the format array('sender@domain.tld' => 'Sender Name')
-     * @param String $replyTo
+     * @param string $replyTo
      *            if $replyTo is not empty then sender name will be the replyTo name, the sender email remains and the replyTo attribute is set. 
      * @param string $subject
      *            subject of the email

@@ -18,23 +18,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class FrontendUser extends AbstractEntity
 {
 
-    /**
-     *
-     * @var ObjectStorage<FrontendUserGroup>
-     */
-    protected $usergroup;
 
-    /**
-     *
-     * @var string
-     */
-    protected $telephone = '';
-
-    /**
-     *
-     * @var string
-     */
-    protected $username = '';
 
     /**
      *
@@ -54,11 +38,6 @@ class FrontendUser extends AbstractEntity
      */
     protected $lastName = '';
 
-    /**
-     *
-     * @var string
-     */
-    protected $password = '';
 
     /**
      *
@@ -72,105 +51,6 @@ class FrontendUser extends AbstractEntity
      */
     protected $infoMailWhenMessageBoardChanged = true;
 
-    /**
-     * Constructs a new Front-End User
-     */
-    public function __construct()
-    {
-        $this->usergroup = new ObjectStorage();
-    }
-
-    /**
-     * Called again with initialize object, as fetching an entity from the DB does not use the constructor
-     */
-    public function initializeObject()
-    {
-        $this->usergroup = $this->usergroup ?? new ObjectStorage();
-    }
-
-    /**
-     * Sets the usergroups.
-     * Keep in mind that the property is called "usergroup"
-     * although it can hold several usergroups.
-     *
-     * @param ObjectStorage<FrontendUserGroup> $usergroup
-     */
-    public function setUsergroup(ObjectStorage $usergroup)
-    {
-        $this->usergroup = $usergroup;
-    }
-
-    /**
-     * Adds a usergroup to the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
-     */
-    public function addUsergroup(FrontendUserGroup $usergroup)
-    {
-        $this->usergroup->attach($usergroup);
-    }
-
-    /**
-     * Removes a usergroup from the frontend user
-     *
-     * @param FrontendUserGroup $usergroup
-     */
-    public function removeUsergroup(FrontendUserGroup $usergroup)
-    {
-        $this->usergroup->detach($usergroup);
-    }
-
-    /**
-     * Returns the usergroups.
-     * Keep in mind that the property is called "usergroup"
-     * although it can hold several usergroups.
-     *
-     * @return ObjectStorage<FrontendUserGroup> An object storage containing the usergroup
-     */
-    public function getUsergroup()
-    {
-        return $this->usergroup;
-    }
-
-    /**
-     * Sets the telephone value
-     *
-     * @param string $telephone
-     */
-    public function setTelephone($telephone)
-    {
-        $this->telephone = $telephone;
-    }
-
-    /**
-     * Returns the telephone value
-     *
-     * @return string
-     */
-    public function getTelephone()
-    {
-        return $this->telephone;
-    }
-
-    /**
-     * Sets the username value
-     *
-     * @param string $username
-     */
-    public function setUsername(String $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * Returns the username value
-     *
-     * @return string
-     */
-    public function getUsername(): String
-    {
-        return $this->username;
-    }
 
     /**
      * Sets the name value
@@ -187,7 +67,7 @@ class FrontendUser extends AbstractEntity
      *
      * @return string
      */
-    public function getName(): String
+    public function getName(): string
     {
         return $this->name;
     }
@@ -232,32 +112,14 @@ class FrontendUser extends AbstractEntity
         return $this->lastName;
     }
 
-    /**
-     * Sets the password value
-     *
-     * @param string $password
-     */
-    public function setPassword(String $password): String
-    {
-        $this->password = $password;
-    }
 
-    /**
-     * Returns the password value
-     *
-     * @return string
-     */
-    public function getPassword(): String
-    {
-        return $this->password;
-    }
 
     /**
      * Sets the email value
      *
      * @param string $email
      */
-    public function setEmail(String $email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -267,7 +129,7 @@ class FrontendUser extends AbstractEntity
      *
      * @return string
      */
-    public function getEmail(): ?String
+    public function getEmail(): ?string
     {
         return $this->email;
     }
