@@ -6,7 +6,8 @@
 <f:layout name="Default"/>
 <f:section name="content"><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" />
 
-<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser" />
+<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser" arguments="{0:url}" />
+<f:if condition="{url}">( {url} )</f:if>
 
 <f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.body" />
 

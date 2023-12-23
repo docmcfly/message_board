@@ -43,6 +43,12 @@ class FrontendUser extends AbstractEntity
      *
      * @var string
      */
+    protected $username = '';
+
+    /**
+     *
+     * @var string
+     */
     protected $email = '';
 
     /**
@@ -152,4 +158,22 @@ class FrontendUser extends AbstractEntity
     {
         $this->infoMailWhenMessageBoardChanged = $b;
     }
+
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getUsername() {
+		return $this->username;
+	}
+	
+	/**
+	 * 
+	 * @param string $username 
+	 * @return self
+	 */
+	public function setUsername($username): self {
+		$this->username = $username;
+		return $this;
+	}
 }

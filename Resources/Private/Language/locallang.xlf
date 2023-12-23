@@ -27,7 +27,12 @@
 			<trans-unit id="messageboard.form.ownMessage.editOrDelete">
 				<source>Edit or delete the public message</source>
 			</trans-unit>
-			
+			<trans-unit id="messageboard.form.message.createOrEdit">
+				<source>Timestamp of creation or last edit</source>
+			</trans-unit>
+			<trans-unit id="messageboard.form.message.deleteDate">
+				<source>Delete date</source>
+			</trans-unit>
 			
 			<trans-unit id="messageBoard.settings.title">
 				<source>Setting of the message board</source>
@@ -59,6 +64,13 @@
 			<trans-unit id="task.messageBoardInformation.error.invalidPage.messageBoardStorageUid">
 				<source>The specified message board storage uid is not a valid page.</source>
 			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.messageBoardOnlineTime">
+				<source>Online time (days)</source>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.invalidUrl.messageBoardUrl">
+				<source>The specified url is invalid.</source>
+			</trans-unit>
+
 			<trans-unit id="task.messageBoardInformation.hint.title">
 				<source>Hint</source>
 			</trans-unit>
@@ -74,7 +86,8 @@
 				<source>Hello %s</source>
 			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.infoMail.teaser">
-				<source>On the message exists a new message or a exist message is updated.</source>
+				<source>Someone has posted something new on the &lt;a href="%s"&gt;bulletin board&lt;/a&gt; or changed their existing message.</source>
+				<target>Jemand hat auf dem &lt;a href="%s"&gt;Schwarzen Brett&lt;/a&gt; etwas Neues veröffentlicht oder seine bestehende Nachricht geändert.</target>
 			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.infoMail.body">
 				<source></source>

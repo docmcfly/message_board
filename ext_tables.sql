@@ -7,6 +7,7 @@ CREATE TABLE tx_messageboard_domain_model_message (
 	text MEDIUMTEXT, 
 	timestamp TIMESTAMP,
 	changed SMALLINT (5) UNSIGNED DEFAULT '1' NOT NULL,
+	expiry_date DATE DEFAULT NULL,
 	UNIQUE KEY user (user),
 	
 );

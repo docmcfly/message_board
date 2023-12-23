@@ -7,7 +7,7 @@
 <body>
 <f:layout name="Default" /><f:section name="content"><div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" /><br /><br /></div>
   
-	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser" /><br /></div>
+	<f:format.raw><div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser" arguments="{0:url}" /><br /></div></f:format.raw>
 	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.body" /><br /></div>
 	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.footer" /><br /></div> 
 	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.regards" /><br /></div> 

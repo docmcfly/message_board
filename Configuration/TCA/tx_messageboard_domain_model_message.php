@@ -81,6 +81,17 @@ return [
                 'readOnly' => true,
             ],
         ],
+        'expiry_date' => [
+            'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.expiryDate',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'eval' => 'datetime',
+                'dbType' => 'datetime',
+                'default' => time() + 86400 * 30,
+                'readOnly' => true,
+            ],
+        ],
         'user' => [
             'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.user',
             'config' => [
@@ -107,9 +118,9 @@ return [
        
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, timestamp, user, text',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, timestamp, expiry_date, user, text',
     ],
     'types' => [
-        '0' => ['showitem' => 'timestamp, user, text'],
+        '0' => ['showitem' => 'timestamp,  expiry_date,  user, text'],
     ],
 ];

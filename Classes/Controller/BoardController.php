@@ -2,6 +2,7 @@
 namespace Cylancer\MessageBoard\Controller;
 
 use Cylancer\MessageBoard\Domain\Model\Message;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Cylancer\MessageBoard\Service\FrontendUserService;
 use Cylancer\MessageBoard\Domain\Repository\MessageRepository;
@@ -31,9 +32,12 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->messageRepository = $messageRepository;
     }
 
-    public function showAction(): void
+    /**
+     * @return ResponseInterface
+     */
+    public function showAction(): ResponseInterface
     {
-     
+
         if ($this->frontendUserService->isLogged()) {
             /**
              *
@@ -66,9 +70,10 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $this->view->assign('currentUserMessage', $currentUserMessage);
             $this->view->assign('messages', $messages);
             $this->view->assign('currentUser', $currentUser);
-            
+
             $this->view->assign('userLink', $this->settings['userLink']);
         }
+        return $this->htmlResponse();
     }
 
     /**
@@ -88,21 +93,38 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             /** @var Message $msg */
             $msg = $this->messageRepository->findOneByUser($currentUser);
-            if ($msg != null) {
-                if ($msg->_isDirty('text')) {
-                    $msg->setText($text);
-                    $msg->setTimestamp(new \DateTime());
-                    $this->messageRepository->update($msg);
-                }
-            } else {
+            $update = $msg != null;
+
+            if (!$update) {
                 $msg = new Message();
-                $msg->setUser($currentUser);
-                $msg->setText($text);
-                $msg->setTimestamp(new \DateTime());
+            }
+            $msg->setUser($currentUser);
+            $msg->setText($text);
+            $msg->setTimestamp(new \DateTime());
+            $msg->setChanged($msg->_isDirty('text'));
+            $tmp = new \DateTime($msg->getTimestamp()->format('Y-m-d H:i:s'));
+            $tmp->add(new \DateInterval('P' . $this->getOnlineTime() . 'D'));
+            $msg->setExpiryDate($tmp);
+
+            if ($update) {
+                $this->messageRepository->update($msg);
+            } else {
                 $this->messageRepository->add($msg);
             }
         }
         $this->redirect("show");
+    }
+
+
+
+
+    /**
+     *
+     * @return int
+     */
+    private function getOnlineTime(): int
+    {
+        return isset($this->settings['onlineTime']) ? intval($this->settings['onlineTime']) : 30;
     }
 
     /**

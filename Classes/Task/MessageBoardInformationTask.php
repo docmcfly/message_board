@@ -1,6 +1,7 @@
 <?php
 namespace Cylancer\MessageBoard\Task;
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -20,22 +21,15 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class MessageBoardInformationTask extends AbstractTask
 {
 
-    /*
-     * TODO:
-     *
-     * - UserRepository storage uid abfragen und verweden.
-     * - Uid validieren
-     * - Messages mit Update = true abfragen: Alle informieren die das möchten, außer dem Verfasser.
-     * ( Multi - Infomail bauen)
-     * - Update-Flag reseten.
-     * - Bereinigem
-     */
 
     // ------------------------------------------------------
     // input fields
     const MESSAGE_BOARD_STORAGE_UID = 'messageBoardStorageUid';
+    const MESSAGE_BOARD_URL = 'messageBoardUrl';
 
     public $messageBoardStorageUid = 0;
+    public $messageBoardUrl = 'https://';
+
 
     // ------------------------------------------------------
     // debug switch
@@ -68,7 +62,7 @@ class MessageBoardInformationTask extends AbstractTask
         $this->messageBoardStorageUid = intval($this->messageBoardStorageUid);
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->persistenceManager = $objectManager->get(PersistenceManager::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
 
         $feUserStorageUids = [];
         /**
@@ -79,13 +73,14 @@ class MessageBoardInformationTask extends AbstractTask
         $s = $qb->select('uid')
             ->from('pages')
             ->where($qb->expr()
-            ->eq('module', $qb->createNamedParameter('fe_users')))
+                ->eq('module', $qb->createNamedParameter('fe_users')))
             ->execute();
-        while ($row = $s->fetch()) {
+        while ($row = $s->fetchAssociative()) {
             $feUserStorageUids[] = $row['uid'];
         }
 
-        $this->pageRepository = $objectManager->get(PageRepository::class);
+        $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, GeneralUtility::makeInstance(Context::class));
+
 
         $this->frontendUserRepository = GeneralUtility::makeInstance(FrontendUserRepository::class, $objectManager);
         $this->frontendUserRepository->injectPersistenceManager($this->persistenceManager);
@@ -129,19 +124,27 @@ class MessageBoardInformationTask extends AbstractTask
         $this->initialize();
 
         if ($this->validate()) {
+
+            // UPDATE tx_messageboard_domain_model_message SET expiry_date = ADDDATE(timestamp, 30);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages')->createQueryBuilder();
+            $queryBuilder->update('tx_messageboard_domain_model_message')
+                ->set('expiry_date', 'ADDDATE(timestamp, 60 )', false)
+                ->where($queryBuilder->expr()->isNull('expiry_date'))
+                ->execute();
+            $this->persistenceManager->persistAll();
+
             $users = [];
             /**
              *
              * @var FrontendUser $user
              * @var Message $messeage
              */
-            // Attation: ->findByInfoMailWhenMessageBoardChanged() <- is "magic" method.
+            // Attation: ->findByInfoMailWhenMessageBoardChanged() <- is a "magic" method.
             foreach ($this->frontendUserRepository->findByInfoMailWhenMessageBoardChanged(true) as $user) {
-                if (! empty($user->getEmail())) {
+                if (!empty($user->getEmail())) {
                     $users[] = $user;
                 }
             }
-
             $isFirstMessage = true;
             foreach ($this->messageRepository->findByChanged(true) as $message) {
                 if ($isFirstMessage) {
@@ -155,7 +158,14 @@ class MessageBoardInformationTask extends AbstractTask
 
                 $this->messageRepository->update($message);
             }
+
+            // delete old messages
+            foreach ($this->messageRepository->findAllExpired() as $msg) {
+                $this->messageRepository->remove($msg);
+            }
             $this->persistenceManager->persistAll();
+
+
             return true;
         } else {
             return false;
@@ -174,7 +184,8 @@ class MessageBoardInformationTask extends AbstractTask
             $subject = LocalizationUtility::translate('task.messageBoardInformation.infoMail.subject', MessageBoardInformationTask::EXTENSION_NAME);
 
             $data = [
-                'user' => $user
+                'user' => $user,
+                'url' => $this->messageBoardUrl
             ];
 
             $this->emailSendService->sendTemplateEmail($recipient, $sender, [], $subject, 'MessageBoardInfoMail', MessageBoardInformationTask::EXTENSION_NAME, $data);
@@ -186,9 +197,10 @@ class MessageBoardInformationTask extends AbstractTask
      *
      * @return string Information to display
      */
-    public function getAdditionalInformation(): String
+    public function getAdditionalInformation(): string
     {
-        return 'Message board storage uid: ' . $this->messageBoardStorageUid;
+        return 'Message board storage uid: ' . $this->messageBoardStorageUid
+            . ' Message board url: ' . $this->messageBoardUrl;
     }
 
     /**
@@ -197,11 +209,13 @@ class MessageBoardInformationTask extends AbstractTask
      * @throws \Exception
      * @return number|string
      */
-    public function get(String $key)
+    public function get(string $key)
     {
         switch ($key) {
             case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
                 return $this->messageBoardStorageUid;
+            case MessageBoardInformationTask::MESSAGE_BOARD_URL:
+                return $this->messageBoardUrl;
             default:
                 throw new \Exception("Unknown key: $key");
         }
@@ -213,11 +227,14 @@ class MessageBoardInformationTask extends AbstractTask
      * @param string|number $value
      * @throws \Exception
      */
-    public function set(String $key, $value)
+    public function set(string $key, $value)
     {
         switch ($key) {
             case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
                 $this->messageBoardStorageUid = $value;
+                break;
+            case MessageBoardInformationTask::MESSAGE_BOARD_URL:
+                $this->messageBoardUrl = $value;
                 break;
             default:
                 throw new \Exception("Unknown key: $key");
