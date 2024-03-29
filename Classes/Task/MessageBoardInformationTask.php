@@ -1,11 +1,17 @@
 <?php
 namespace Cylancer\MessageBoard\Task;
 
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\MailerInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use Cylancer\MessageBoard\Domain\Repository\MessageRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -13,7 +19,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use Cylancer\MessageBoard\Domain\Model\Message;
 use Cylancer\MessageBoard\Domain\Repository\FrontendUserRepository;
 use Cylancer\MessageBoard\Service\FrontendUserService;
-use Cylancer\MessageBoard\Service\EmailSendService;
 use Cylancer\MessageBoard\Domain\Model\FrontendUser;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -25,10 +30,22 @@ class MessageBoardInformationTask extends AbstractTask
     // ------------------------------------------------------
     // input fields
     const MESSAGE_BOARD_STORAGE_UID = 'messageBoardStorageUid';
-    const MESSAGE_BOARD_URL = 'messageBoardUrl';
+    const MESSAGE_BOARD_PAGE_UID = 'messageBoardPageUid';
+    const VALIDITY_PERIOD = 'validtyPeriod';
 
+    const SITE_IDENTIFIER = 'siteIdentifier';
+
+    /** @var int */
     public $messageBoardStorageUid = 0;
-    public $messageBoardUrl = 'https://';
+
+    /** @var int */
+    public $messageBoardPageUid = 0;
+
+    /** @var int */
+    public $validtyPeriod = 60;
+
+    /** @var string */
+    public $siteIdentifier = '';
 
 
     // ------------------------------------------------------
@@ -54,14 +71,11 @@ class MessageBoardInformationTask extends AbstractTask
     /** @var PersistenceManager  */
     private $persistenceManager = null;
 
-    /** @var EmailSendService */
-    private $emailSendService = null;
 
     private function initialize()
     {
         $this->messageBoardStorageUid = intval($this->messageBoardStorageUid);
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
 
         $feUserStorageUids = [];
@@ -74,7 +88,7 @@ class MessageBoardInformationTask extends AbstractTask
             ->from('pages')
             ->where($qb->expr()
                 ->eq('module', $qb->createNamedParameter('fe_users')))
-            ->execute();
+            ->executeQuery();
         while ($row = $s->fetchAssociative()) {
             $feUserStorageUids[] = $row['uid'];
         }
@@ -82,13 +96,13 @@ class MessageBoardInformationTask extends AbstractTask
         $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class, GeneralUtility::makeInstance(Context::class));
 
 
-        $this->frontendUserRepository = GeneralUtility::makeInstance(FrontendUserRepository::class, $objectManager);
+        $this->frontendUserRepository = GeneralUtility::makeInstance(FrontendUserRepository::class);
         $this->frontendUserRepository->injectPersistenceManager($this->persistenceManager);
         $querySettings = $this->frontendUserRepository->createQuery()->getQuerySettings();
         $querySettings->setStoragePageIds($feUserStorageUids);
         $this->frontendUserRepository->setDefaultQuerySettings($querySettings);
 
-        $this->messageRepository = GeneralUtility::makeInstance(MessageRepository::class, $objectManager);
+        $this->messageRepository = GeneralUtility::makeInstance(MessageRepository::class);
         $this->messageRepository->injectPersistenceManager($this->persistenceManager);
         $querySettings = $this->messageRepository->createQuery()->getQuerySettings();
         $querySettings->setStoragePageIds([
@@ -97,8 +111,6 @@ class MessageBoardInformationTask extends AbstractTask
         $this->messageRepository->setDefaultQuerySettings($querySettings);
 
         $this->frontendUserService = GeneralUtility::makeInstance(FrontendUserService::class, $this->frontendUserRepository);
-
-        $this->emailSendService = GeneralUtility::makeInstance(EmailSendService::class);
     }
 
     private function validate()
@@ -110,6 +122,8 @@ class MessageBoardInformationTask extends AbstractTask
         $valid &= $this->frontendUserRepository != null;
 
         $valid &= $this->isPageUidValid($this->messageBoardStorageUid);
+        $valid &= $this->isPageUidValid($this->messageBoardPageUid);
+        $valid &= $this->isSiteIdentifierValid($this->siteIdentifier);
 
         return $valid;
     }
@@ -117,6 +131,20 @@ class MessageBoardInformationTask extends AbstractTask
     private function isPageUidValid(int $id)
     {
         return $this->pageRepository->getPage($id) != null;
+    }
+
+    /**
+     *
+     * @return boolean
+     */
+    private function isSiteIdentifierValid(string $siteIdentifier): bool
+    {
+        try {
+            GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier($siteIdentifier);
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     public function execute()
@@ -128,9 +156,9 @@ class MessageBoardInformationTask extends AbstractTask
             // UPDATE tx_messageboard_domain_model_message SET expiry_date = ADDDATE(timestamp, 30);
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages')->createQueryBuilder();
             $queryBuilder->update('tx_messageboard_domain_model_message')
-                ->set('expiry_date', 'ADDDATE(timestamp, 60 )', false)
+                ->set('expiry_date', 'ADDDATE(timestamp, ' . $this->validtyPeriod . ' )', false)
                 ->where($queryBuilder->expr()->isNull('expiry_date'))
-                ->execute();
+                ->executeStatement();
             $this->persistenceManager->persistAll();
 
             $users = [];
@@ -149,7 +177,7 @@ class MessageBoardInformationTask extends AbstractTask
             foreach ($this->messageRepository->findByChanged(true) as $message) {
                 if ($isFirstMessage) {
                     foreach ($users as $user) {
-                        $this->sendInfoMail($user);
+                        $this->sendInfoMail($user, $message);
                     }
 
                     $isFirstMessage = false;
@@ -163,7 +191,7 @@ class MessageBoardInformationTask extends AbstractTask
             foreach ($this->messageRepository->findAllExpired() as $msg) {
                 $this->messageRepository->remove($msg);
             }
-            $this->persistenceManager->persistAll();
+            //     $this->persistenceManager->persistAll();
 
 
             return true;
@@ -172,25 +200,46 @@ class MessageBoardInformationTask extends AbstractTask
         }
     }
 
-    private function sendInfoMail(FrontendUser $user)
+    private function sendInfoMail(FrontendUser $user, Message $message)
     {
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-            $recipient = [
-                $user->getEmail() => $user->getFirstName() . ' ' . $user->getLastName()
-            ];
-            $sender = [
-                MailUtility::getSystemFromAddress() => LocalizationUtility::translate('task.messageBoardInformation.updateMail.senderName', MessageBoardInformationTask::EXTENSION_NAME)
-            ];
-            $subject = LocalizationUtility::translate('task.messageBoardInformation.infoMail.subject', MessageBoardInformationTask::EXTENSION_NAME);
 
-            $data = [
-                'user' => $user,
-                'url' => $this->messageBoardUrl
-            ];
 
-            $this->emailSendService->sendTemplateEmail($recipient, $sender, [], $subject, 'MessageBoardInfoMail', MessageBoardInformationTask::EXTENSION_NAME, $data);
+            $fluidEmail = GeneralUtility::makeInstance(FluidEmail::class);
+            $fluidEmail
+                ->setRequest($this->createRequest($this->siteIdentifier))
+                ->to(new Address($user->getEmail(), $user->getFirstName() . ' ' . $user->getLastName()))
+                ->from(new Address(MailUtility::getSystemFromAddress(), LocalizationUtility::translate('task.messageBoardInformation.updateMail.senderName', MessageBoardInformationTask::EXTENSION_NAME)))
+                ->subject(LocalizationUtility::translate('task.messageBoardInformation.infoMail.subject', MessageBoardInformationTask::EXTENSION_NAME))
+                ->format(FluidEmail::FORMAT_BOTH) // send HTML and plaintext mail
+                ->setTemplate('MessageBoardInfoMail')
+                ->assign('user', $user)
+                ->assign('message', $message)
+                ->assign('pageUid', $this->messageBoardPageUid)
+            ;
+            GeneralUtility::makeInstance(MailerInterface::class)->send($fluidEmail);
         }
     }
+
+
+
+    private function createRequest(string $siteIdentifier): RequestInterface
+    {
+        $serverRequestFactory = GeneralUtility::makeInstance(ServerRequestFactoryInterface::class);
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier($siteIdentifier);
+        $serverRequest = $serverRequestFactory->createServerRequest('GET', $site->getBase())
+            ->withAttribute('applicationType', \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('site', $site)
+            ->withAttribute('extbase', new \TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters());
+        $request = GeneralUtility::makeInstance(Request::class, $serverRequest);
+        //$GLOBALS['TYPO3_REQUEST'] = $request;
+        if (!isset($GLOBALS['TYPO3_REQUEST'])) {
+            $GLOBALS['TYPO3_REQUEST'] = $request;
+        }
+        return $request;
+    }
+
+
 
     /**
      * This method returns the sleep duration as additional information
@@ -200,7 +249,9 @@ class MessageBoardInformationTask extends AbstractTask
     public function getAdditionalInformation(): string
     {
         return 'Message board storage uid: ' . $this->messageBoardStorageUid
-            . ' Message board url: ' . $this->messageBoardUrl;
+            . ' Message board page uid: ' . $this->messageBoardPageUid
+            . ' Validity period: ' . $this->validtyPeriod
+            . ' Site identifier: ' . $this->siteIdentifier;
     }
 
     /**
@@ -214,8 +265,12 @@ class MessageBoardInformationTask extends AbstractTask
         switch ($key) {
             case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
                 return $this->messageBoardStorageUid;
-            case MessageBoardInformationTask::MESSAGE_BOARD_URL:
-                return $this->messageBoardUrl;
+            case MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID:
+                return $this->messageBoardPageUid;
+            case MessageBoardInformationTask::VALIDITY_PERIOD:
+                return $this->validtyPeriod;
+            case MessageBoardInformationTask::SITE_IDENTIFIER:
+                return $this->siteIdentifier;
             default:
                 throw new \Exception("Unknown key: $key");
         }
@@ -233,8 +288,14 @@ class MessageBoardInformationTask extends AbstractTask
             case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
                 $this->messageBoardStorageUid = $value;
                 break;
-            case MessageBoardInformationTask::MESSAGE_BOARD_URL:
-                $this->messageBoardUrl = $value;
+            case MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID:
+                $this->messageBoardPageUid = $value;
+                break;
+            case MessageBoardInformationTask::VALIDITY_PERIOD:
+                $this->validtyPeriod = $value;
+                break;
+            case MessageBoardInformationTask::SITE_IDENTIFIER:
+                $this->siteIdentifier = $value;
                 break;
             default:
                 throw new \Exception("Unknown key: $key");

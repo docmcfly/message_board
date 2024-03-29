@@ -25,7 +25,7 @@
 			</trans-unit>
 			<trans-unit id="tx_messageboard_board.name">
 				<source>Message board</source>
-				<target state="tanslated">Schwarzes Brett</target>
+				<target state="tanslated">Anschlagtafel</target>
 			</trans-unit>
 			<trans-unit id="tx_messageboard_board.description">
 				<source>The fe users can publish a message for other fe users.</source>

@@ -13,7 +13,7 @@ use Cylancer\MessageBoard\Domain\Repository\MessageRepository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2022 C. Gogolin <service@cylancer.net>
+ * (c) 2024 C. Gogolin <service@cylancer.net>
  *
  * @package Cylancer\MessageBoard\Controller
  */
@@ -81,7 +81,7 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param Message $currentUserMessage
      * @return void
      */
-    public function saveAction(Message $currentUserMessage): void
+    public function saveAction(Message $currentUserMessage): ResponseInterface
     {
         $currentUser = $this->frontendUserService->getCurrentUser();
 
@@ -112,7 +112,7 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $this->messageRepository->add($msg);
             }
         }
-        $this->redirect("show");
+        return $this->redirect("show");
     }
 
 
@@ -131,12 +131,12 @@ class BoardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      *
      * @return void
      */
-    public function removeAction(): void
+    public function removeAction(): ResponseInterface
     {
         $currentUser = $this->frontendUserService->getCurrentUser();
         foreach ($this->messageRepository->findByUser($currentUser) as $msg) {
             $this->messageRepository->remove($msg);
         }
-        $this->redirect("show");
+        return $this->redirect("show");
     }
 }

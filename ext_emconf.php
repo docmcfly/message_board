@@ -14,16 +14,16 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'A simple message board for the frontend users',
     'description' => 'The fe users can publish a message for other fe users.',
     'category' => 'plugin',
-    'author' => 'Clemens Gogolin',
+    'author' => 'C. Gogolin',
     'author_email' => 'service@cylancer.net',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => true,
-    'version' => '2.1.0',
+    'version' => '3.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.5.99',
+            'typo3' => '12.4.0-12.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],
@@ -32,6 +32,7 @@ $EM_CONF[$_EXTKEY] = [
 
 
 /* CHANGLOG: 
+        3.0.0 :: Update to TYPO3 12.4
         2.1.0 :: Add a expiry date / Update the UI.
         2.0.1 :: Fix the contact link. 
         2.0.0 :: Fix the plugin registration/configuration.

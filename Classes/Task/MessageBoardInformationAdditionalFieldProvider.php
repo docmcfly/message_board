@@ -2,6 +2,7 @@
 namespace Cylancer\MessageBoard\Task;
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\Enumeration\Action;
@@ -113,6 +114,43 @@ class MessageBoardInformationAdditionalFieldProvider extends AbstractAdditionalF
         ];
     }
 
+    /**
+     *
+     * @param array $taskInfo
+     * @param MessageBoardInformationTask|null $task
+     * @param SchedulerModuleController $schedulerModule
+     * @param string $key
+     * @param array $additionalFields
+     * @return void
+     */
+    private function initStringAddtionalField(array &$taskInfo, $task, SchedulerModuleController $schedulerModule, string $key, array &$additionalFields)
+    {
+        $currentSchedulerModuleAction = $schedulerModule->getCurrentAction();
+
+        // Initialize extra field value
+        if (empty($taskInfo[$key])) {
+            if ($currentSchedulerModuleAction->equals(Action::ADD)) {
+                // In case of new task and if field is empty, set default sleep time
+                $taskInfo[$key] = '';
+            } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
+                // In case of edit, set to internal value if no data was submitted already
+                $taskInfo[$key] = $task->get($key);
+            } else {
+                // Otherwise set an empty value, as it will not be used anyway
+                $taskInfo[$key] = '';
+            }
+        }
+
+        // Write the code for the field
+        $fieldID = 'task_' . $key;
+        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[' . $key . ']" id="' . $fieldID . '" value="' . $taskInfo[$key] . '" >';
+        $additionalFields[$fieldID] = [
+            'code' => $fieldCode,
+            'label' => MessageBoardInformationAdditionalFieldProvider::TRANSLATION_PREFIX . $key,
+            'cshKey' => '_MOD_system_txschedulerM1',
+            'cshLabel' => $fieldID
+        ];
+    }
 
 
     /**
@@ -132,7 +170,9 @@ class MessageBoardInformationAdditionalFieldProvider extends AbstractAdditionalF
         $additionalFields = [];
         $this->initHintText($additionalFields);
         $this->initIntegerAddtionalField($taskInfo, $task, $schedulerModule, MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID, $additionalFields);
-        $this->initUrlAddtionalField($taskInfo, $task, $schedulerModule, MessageBoardInformationTask::MESSAGE_BOARD_URL, $additionalFields);
+        $this->initIntegerAddtionalField($taskInfo, $task, $schedulerModule, MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID, $additionalFields);
+        $this->initIntegerAddtionalField($taskInfo, $task, $schedulerModule, MessageBoardInformationTask::VALIDITY_PERIOD, $additionalFields);
+        $this->initStringAddtionalField($taskInfo, $task, $schedulerModule, MessageBoardInformationTask::SITE_IDENTIFIER, $additionalFields);
 
         // debug($additionalFields);
         return $additionalFields;
@@ -200,6 +240,26 @@ class MessageBoardInformationAdditionalFieldProvider extends AbstractAdditionalF
     }
 
 
+    /**
+     *
+     * @param array $submittedData
+     * @param SchedulerModuleController $schedulerModule
+     * @param string $key
+     * @return boolean
+     */
+    private function validateSitedField(array &$submittedData, SchedulerModuleController $schedulerModule, string $key)
+    {
+        $result = true;
+
+        try {
+            GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier($submittedData[$key]);
+        } catch (\Exception $e) {
+            $this->addMessage($this->getLanguageService()
+                ->sL(MessageBoardInformationAdditionalFieldProvider::TRANSLATION_PREFIX . 'error.siteNotFound.' . $key), FlashMessage::ERROR);
+            $result = false;
+        }
+        return $result;
+    }
 
     private function validatePage($pid)
     {
@@ -221,7 +281,9 @@ class MessageBoardInformationAdditionalFieldProvider extends AbstractAdditionalF
     {
         $result = true;
         $result &= $this->validatePageAdditionalField($submittedData, $schedulerModule, MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID);
-        $result &= $this->validateUrlAdditionalField($submittedData, $schedulerModule, MessageBoardInformationTask::MESSAGE_BOARD_URL);
+        $result &= $this->validatePageAdditionalField($submittedData, $schedulerModule, MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID);
+        $result &= $this->validateIntegerAdditionalField($submittedData, $schedulerModule, MessageBoardInformationTask::VALIDITY_PERIOD);
+        $result &= $this->validateSitedField($submittedData, $schedulerModule, MessageBoardInformationTask::SITE_IDENTIFIER);
         return $result;
     }
 
@@ -252,7 +314,9 @@ class MessageBoardInformationAdditionalFieldProvider extends AbstractAdditionalF
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
         $this->saveAdditionalField($submittedData, $task, MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID);
-        $this->saveAdditionalField($submittedData, $task, MessageBoardInformationTask::MESSAGE_BOARD_URL);
+        $this->saveAdditionalField($submittedData, $task, MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID);
+        $this->saveAdditionalField($submittedData, $task, MessageBoardInformationTask::VALIDITY_PERIOD);
+        $this->saveAdditionalField($submittedData, $task, MessageBoardInformationTask::SITE_IDENTIFIER);
     }
 
     /**
