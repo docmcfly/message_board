@@ -12,6 +12,12 @@
 			<trans-unit id="tx_messageboard_domain_model_message.text">
 				<source>Message text</source>
 			</trans-unit>
+			<trans-unit id="tx_messageboard_domain_model_message.timestamp">
+				<source>Last update</source>
+			</trans-unit>
+			<trans-unit id="tx_messageboard_domain_model_message.expiryDate">
+				<source>Expiry date</source>
+			</trans-unit>
 			<trans-unit id="tx_messageboard_board.name">
 				<source>Message board</source>
 			</trans-unit>
@@ -20,16 +26,13 @@
 			</trans-unit>
 			<trans-unit id="tx_messageBoard_domain_model_user.info_mail_when_message_board_changed">
 				<source>Send a info mail when the message board is changed.</source>
-				<target state="tanslated">Soll eine Info-E-Mail versandt werden, wenn es Änderungen am schwarzen Brett vorgenommen wurden.</target>
 			</trans-unit>
 			<trans-unit id="tx_messageBoard_domain_model_user.tab_settings">
-				<source>Settings :: message board</source>
+				<source>Message board</source>
 			</trans-unit>
 			<trans-unit id="tx_messageBoard_domain_model_user.tx_extbase_type">
 				<source>Message board</source>
 			</trans-unit>
-			
-
 			
 		</body>
 	</file>

@@ -20,6 +20,21 @@
 							</config>
 						</TCEforms>
 					</settings.userLink>
+					<settings.onlineTime>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:message_board/Resources/Private/Language/locallang_be_board.xlf:flexforms_general.settings.onlineTime.title
+							</label>
+							<config>
+								<type>input</type>
+								<eval>num, int,required</eval>
+								<range>
+									<lower>1</lower>
+								</range>
+								<default>30</default>
+							</config>
+						</TCEforms>
+					</settings.onlineTime>
 				</el>
 			</ROOT>
 		</sDEF>

@@ -4,15 +4,15 @@
 	"license" : "GPL-2.0-or-later",
 	"description" : "A simple message board for the fe user",
 	"authors" : [{
-			"name" : "Clemens Gogolin",
+			"name" : "C. Gogolin",
 			"role" : "Developer"
 		}, {
-			"name" : "Clemens Gogolin",
+			"name" : "C. Gogolin",
 			"role" : "Product Manager"
 		}
 	],
 	"require" : {
-		"typo3/cms-core" : "^11.5"
+		"typo3/cms-core" : "^12.4"
 	},
 	"autoload" : {
 		"psr-4" : {

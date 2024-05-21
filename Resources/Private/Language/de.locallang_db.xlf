@@ -15,9 +15,17 @@
 				<source>Message text</source>
 				<target state="tanslated">Nachrichtentext</target>
 			</trans-unit>
+			<trans-unit id="tx_messageboard_domain_model_message.timestamp">
+				<source>Last update</source>
+				<target state="tanslated">Letzte Speicherung</target>
+			</trans-unit>
+			<trans-unit id="tx_messageboard_domain_model_message.expiryDate">
+				<source>Expiry date</source>
+				<target state="tanslated">Gültigkeitsdatum</target>
+			</trans-unit>
 			<trans-unit id="tx_messageboard_board.name">
 				<source>Message board</source>
-				<target state="tanslated">Schwarzes Brett</target>
+				<target state="tanslated">Anschlagtafel</target>
 			</trans-unit>
 			<trans-unit id="tx_messageboard_board.description">
 				<source>The fe users can publish a message for other fe users.</source>

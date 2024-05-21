@@ -1,9 +1,11 @@
-<!DOCTYPE html PUBLIC "-//WC//DTD XHTML . Strict//EN"
-	"http://www.w.org/TR/xhtml/DTD/xhtml-strict.dtd">
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true" xmlns="http://www.w.org//xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC "-//WC//DTD XHTML . Strict//EN" "http://www.w.org/TR/xhtml/DTD/xhtml-strict.dtd">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true"
+	xmlns="http://www.w.org//xhtml" xml:lang="en" lang="en">
+
 <head>
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 </head>
+
 <body>
 	<f:layout name="Default" />
 	<f:section name="content">
@@ -17,71 +19,104 @@
 		</f:security.ifAuthenticated>
 	</f:section>
 	<f:section name="authenticated">
-		<f:asset.script identifier="ckeditor.js" src="EXT:message_board/Resources/Public/JavaScript/ckeditor/build/ckeditor.js" />
-		<f:asset.script identifier="tx_messageboard_custom.js" src="EXT:message_board/Resources/Public/JavaScript/tx_messageboard_custom.js" defer="true" />
+		<f:asset.script identifier="ckeditor.js"
+			src="EXT:message_board/Resources/Public/JavaScript/ckeditor/build/ckeditor.js" />
+		<f:asset.script identifier="tx_messageboard_custom.js"
+			src="EXT:message_board/Resources/Public/JavaScript/tx_messageboard_custom.js" defer="true" />
 		<div class="container pl-0">
-			<f:if condition="!{isCurrentUserMessagePersistent}">
-				<f:form action="save" name="currentUserMessage" object="{currentUserMessage}" enctype="multipart/form-data">
-					<div class="row ">
-						<div class="col ">
-							<h1 class="small">
-								<f:translate key="messageboard.form.ownMessage.create" />
-							</h1>
+			<f:if condition="{isCurrentUserMessagePersistent}">
+				<f:then>
+					<f:form action="save" name="currentUserMessage" object="{currentUserMessage}"
+						enctype="multipart/form-data">
+						<div class="row ">
+							<div class="col">
+								<h1 class="small">
+									<f:translate key="messageboard.form.ownMessage.editOrDelete" />
+								</h1>
+							</div>
 						</div>
-					</div>
-					<div class="row ">
-						<div class="col col-lg-11 form-check  pb-3">
-							<f:form.textarea id="text" property="text" class="form-control" />
+						<div class="row ">
+							<div class="col-12">
+								<f:form.textarea id="text" property="text" class="form-control" />
+							</div>
 						</div>
-						<div class="col form-check ">
-							<f:form.submit class="btn btn-primary btn-lg" value="{f:translate(key: 'messageboard.form.create.submit')}" />
+						<div class="row mt-2 g-1 ">
+							<div class="col-4 ">
+								<f:form.submit class="btn btn-primary w-100"
+									value="{f:translate(key: 'messageboard.form.update.submit')}"
+									title="{f:translate(key: 'messageboard.form.update.submit.title')}" />
+							</div>
+							<div class="col-4">
+								<f:link.action class="btn btn-dark text-white w-100 " action="remove"
+									title="{f:translate(key: 'messageboard.form.remove.submit.title')}">
+									<f:translate key="messageboard.form.remove.submit" />
+								</f:link.action>
+							</div>
+							<div class="col-4">
+								<div class=" btn btn-dark text-white w-100 fs-7 " aria-disabled="disabled">
+									<f:translate key="messageboard.form.message.deleteDate" />:
+									{currentUserMessage.expiryDate->f:format.date(format:'d.m.Y')}
+								</div>
+							</div>
 						</div>
-					</div>
-				</f:form>
+					</f:form>
+				</f:then>
+				<f:else>
+					<f:form action="save" name="currentUserMessage" object="{currentUserMessage}"
+						enctype="multipart/form-data">
+						<div class="row ">
+							<div class="col">
+								<h1 class="small">
+									<f:translate key="messageboard.form.ownMessage.create" />
+								</h1>
+							</div>
+						</div>
+						<div class="row ">
+							<div class="col-12">
+								<f:form.textarea id="text" property="text" class="form-control" />
+							</div>
+						</div>
+						<div class="row  mt-2 g-1 ">
+							<div class="col-4 ">
+								<f:form.submit class="btn btn-primary w-100"
+									value="{f:translate(key: 'messageboard.form.create.submit')}" />
+							</div>
+						</div>
+					</f:form>
+				</f:else>
+
 			</f:if>
 			<f:for each="{messages}" as="message">
-				<f:if condition="{message.user.uid} == {currentUser.uid}">
-					<f:then>
-						<f:form action="save" name="currentUserMessage" object="{currentUserMessage}" enctype="multipart/form-data">
-							<div class="row ">
-								<div class="col">
-									<h1 class="small">
-										<f:translate key="messageboard.form.ownMessage.editOrDelete" />
-									</h1>
-								</div>
+				<div class="form-group">
+					<div class="border border-dark "
+						style="margin-top: 2em; resize: vertical; overflow: auto; min-height: 12em; max-height: 35em; ">
+						<div class="bg-light row m-1">
+							<div class="col fs-4 fw-bolder">
+								<f:if condition="{userLink}">
+									<f:then>
+										<f:link.typolink absolute="true"
+											parameter="{userLink}#name_{message.user.username}">
+											{message.user.firstName} {message.user.lastName}</f:link.typolink>
+									</f:then>
+									<f:else>{message.user.firstName} {message.user.lastName}</f:else>
+								</f:if>
 							</div>
-							<div class="row ">
-								<div class="col-lg-10 col-md-12 form-check pb-3 ">
-									<f:form.textarea id="text" property="text" class="form-control" />
+
+							<div class="col-6 fs-6 align-middle">
+								<div>
+									<f:translate key="messageboard.form.message.createOrEdit" />:
+									<span class="text-info">{message.timestamp->f:format.date(format:'d.m.Y -
+										H:i:s')}</span>
 								</div>
-								<div class="col col-lg-2 form-check">
-									<f:form.submit class="btn btn-primary btn-lg" value="{f:translate(key: 'messageboard.form.update.submit')}"
-										title="{f:translate(key: 'messageboard.form.update.submit.title')}"
-									/>
-									<f:link.action class="btn  btn-primary btn-lg" action="remove" title="{f:translate(key: 'messageboard.form.remove.submit.title')}">
-										<f:translate key="messageboard.form.remove.submit" />
-									</f:link.action>
+								<div>
+									<f:translate key="messageboard.form.message.deleteDate" />:
+									<span class="text-danger">{message.expiryDate->f:format.date(format:'d.m.Y')}</span>
 								</div>
-							</div>
-						</f:form>
-					</f:then>
-					<f:else>
-						<div class="form-group">
-							<div style="margin-top: 2em; resize: vertical; overflow: auto; min-height: 12em; max-height: 35em; border: 1px black solid;">
-								<div style="background-color: silver; padding: 1em;">
-									<f:if condition="{userLink}">
-										<f:then>
-											<f:link.typolink parameter="{userLink}#name_{message.user.username}">{message.user.firstName} {message.user.lastName}</f:link.typolink>
-										</f:then>
-										<f:else>{message.user.firstName} {message.user.lastName}</f:else>
-									</f:if>
-									<span class="small">&nbsp; &nbsp; ({message.timestamp->f:format.date(format:'d.m.Y - H:i:s')})</span>
-								</div>
-								<div style="padding: 1em;">{message.text -> f:format.html()}</div>
 							</div>
 						</div>
-					</f:else>
-				</f:if>
+						<div class="p-3">{message.text -> f:format.html()}</div>
+					</div>
+				</div>
 			</f:for>
 		</div>
 	</f:section>
@@ -93,4 +128,5 @@
 		</div>
 	</f:section>
 </body>
+
 </html>

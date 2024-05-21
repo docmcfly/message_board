@@ -1,12 +1,16 @@
 <?php
 use Cylancer\MessageBoard\Controller\BoardController;
 use Cylancer\MessageBoard\Controller\SettingsController;
+use Cylancer\MessageBoard\Task\MessageBoardInformationAdditionalFieldProvider;
+use Cylancer\MessageBoard\Task\MessageBoardInformationTask;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-defined('TYPO3_MODE') || die('Access denied.');
+defined('TYPO3') || die('Access denied.');
 
 call_user_func(function () {
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin( //
-    'Cylancer.MessageBoard', //
+    ExtensionUtility::configurePlugin( //
+    'MessageBoard', //
     'Board', //
     [ 
         BoardController::class => 'show, save, remove'
@@ -15,8 +19,8 @@ call_user_func(function () {
         [
             BoardController::class => 'show, save, remove'
         ]);
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin( //
-    'Cylancer.MessageBoard', //
+    ExtensionUtility::configurePlugin( //
+    'MessageBoard', //
     'Settings', //
     [
         SettingsController::class => 'show, save'
@@ -27,7 +31,7 @@ call_user_func(function () {
         ]);
 
     // wizards
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('mod {
+    ExtensionManagementUtility::addPageTSConfig('mod {
             wizards.newContentElement.wizardItems.plugins {
                 elements {
                     messageboard-plugin-board {
@@ -64,13 +68,18 @@ call_user_func(function () {
 });
 
 // Add task for optimizing database tables
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Cylancer\MessageBoard\Task\MessageBoardInformationTask::class] = [
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][MessageBoardInformationTask::class] = [
     'extension' => 'messageboard',
     'title' => 'LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.title',
     'description' => 'LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.description',
-    'additionalFields' => \Cylancer\MessageBoard\Task\MessageBoardInformationAdditionalFieldProvider::class
+    'additionalFields' => MessageBoardInformationAdditionalFieldProvider::class
 ];
     
+// E-Mail-Templates
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths']['message_board']    = 'EXT:message_board/Resources/Private/Templates/MessageBoardInfoMail/';
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths']['message_board']    = 'EXT:message_board/Resources/Private/Layouts/MessageBoardInfoMail/';
+$GLOBALS['TYPO3_CONF_VARS']['MAIL']['partialRootPaths']['message_board']    = 'EXT:message_board/Resources/Private/Partials/MessageBoardInfoMail/';
+
     
 
 

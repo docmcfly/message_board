@@ -9,7 +9,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2021 C. Gogolin <service@cylancer.net>
+ * (c) 2024 C. Gogolin <service@cylancer.net>
  */
 class Message extends AbstractEntity
 {
@@ -37,6 +37,12 @@ class Message extends AbstractEntity
      * @var \DateTime $timestamp
      */
     protected $timestamp = null;
+
+    /**
+     *
+     * @var \DateTime $expiryDate
+     */
+    protected $expiryDate = null;
 
     public function setText(string $text): void
     {
@@ -85,6 +91,19 @@ class Message extends AbstractEntity
         $this->timestamp = $timestamp;
     }
 
+    /**
+     * @return ?\DateTime
+     */
+    public function getExpiryDate() : ?\DateTime
+    {
+        return $this->expiryDate;
+    }
+
+   public function setExpiryDate(\DateTime $expiryDate): void
+    {
+        $this->expiryDate = $expiryDate;
+    }
+    
     /**
      *
      * @return boolean

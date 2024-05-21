@@ -11,7 +11,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2022 Clemens Gogolin <service@cylancer.net>
+ * (c) 2024 C. Gogolin <service@cylancer.net>
  *
  * @package Cylancer\MessageBoard\Domain\Model
  */
@@ -38,6 +38,12 @@ class FrontendUser extends AbstractEntity
      */
     protected $lastName = '';
 
+
+    /**
+     *
+     * @var string
+     */
+    protected $username = '';
 
     /**
      *
@@ -152,4 +158,22 @@ class FrontendUser extends AbstractEntity
     {
         $this->infoMailWhenMessageBoardChanged = $b;
     }
+
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getUsername() {
+		return $this->username;
+	}
+	
+	/**
+	 * 
+	 * @param string $username 
+	 * @return self
+	 */
+	public function setUsername($username): self {
+		$this->username = $username;
+		return $this;
+	}
 }

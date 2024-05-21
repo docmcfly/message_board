@@ -5,9 +5,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
-<f:layout name="Default" /><f:section name="content"><div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" /><br /><br /></div>
-  
-	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser" /><br /></div>
+<f:layout name="MessageBoardInfoMail" /><f:section name="content"><div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" /><br /><br /></div>
+
+	<f:variable name="link"><f:link.action linkAccessRestrictedPages="true"  absolute="true" pageUid="{pageUid}" noCache="true" ><f:format.stripTags>{message.text -> f:format.crop(maxCharacters: 40)}</f:format.stripTags></f:link.action></f:variable>
+	<f:format.raw><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser"  arguments="{0:link}" /></f:format.raw>
+
 	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.body" /><br /></div>
 	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.footer" /><br /></div> 
 	<div><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.regards" /><br /></div> 

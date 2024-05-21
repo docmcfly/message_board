@@ -16,7 +16,10 @@
 				<source>Common settings</source>
 			</trans-unit>
 			<trans-unit id="flexforms_general.settings.userLink.title">
-				<source>User link</source>
+				<source>Users list link</source>
+			</trans-unit>
+			<trans-unit id="flexforms_general.settings.onlineTime.title">
+				<source>Online time (days)</source>
 			</trans-unit>
 			
 		</body>

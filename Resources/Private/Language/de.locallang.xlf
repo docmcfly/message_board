@@ -4,24 +4,24 @@
 		<header />
 		<body>
 			<trans-unit id="messageboard.form.update.submit">
-				<source>↺</source>
-				<target state="tanslated">↺</target>
+				<source>Update</source>
+				<target state="tanslated">Aktualisieren</target>
 			</trans-unit>
 			<trans-unit id="messageboard.form.update.submit.title">
 				<source>Update</source>
 				<target state="tanslated">Aktualisieren</target>
 			</trans-unit>
 			<trans-unit id="messageboard.form.create.submit">
-				<source>+</source>
-				<target state="tanslated">+</target>
+				<source>Save</source>
+				<target state="tanslated">Speichern</target>
 			</trans-unit>
 			<trans-unit id="messageboard.form.create.submit.title">
 				<source>Add</source>
 				<target state="tanslated">Hinzufügen</target>
 			</trans-unit>
 			<trans-unit id="messageboard.form.remove.submit">
-				<source>∅</source>
-				<target state="tanslated">∅</target>
+				<source>Remove</source>
+				<target state="tanslated">Entfernen</target>
 			</trans-unit>
 			<trans-unit id="messageboard.form.remove.submit.title">
 				<source>Remove</source>
@@ -33,9 +33,16 @@
 			</trans-unit>
 			<trans-unit id="messageboard.form.ownMessage.editOrDelete">
 				<source>Edit or delete the public message</source>
-				<target state="tanslated">Die veröffentlichte Nachricht bearbeiten oder löschen:</target>
+				<target state="tanslated">Deine veröffentlichte Nachricht bearbeiten oder löschen:</target>
 			</trans-unit>
-			
+			<trans-unit id="messageboard.form.message.createOrEdit">
+				<source>Timestamp of creation or last edit</source>
+				<target state="tanslated">Zeitpunkt der Erstellung bzw. der letzten Bearbeitung</target>
+			</trans-unit>
+			<trans-unit id="messageboard.form.message.deleteDate">
+				<source>Delete date</source>
+				<target state="tanslated">Löschdatum</target>
+			</trans-unit>
 			
 			<trans-unit id="messageBoard.settings.title">
 				<source>Setting of the message board</source>
@@ -64,12 +71,13 @@
 			
 			<trans-unit id="task.messageBoardInformation.title">
 				<source>Message board change informater</source>
-				<target>Schwarzes Brett Änderungsmelder</target>
+				<target>Anschlagtafel - Änderungsmelder</target>
 			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.description">
 				<source>Informs the user if the message board is changed.</source>
-				<target>Informiert die Nutzer, wenn das Schwarze Brett aktualisiert wurde.</target>
+				<target>Informiert die Nutzer, wenn die Anschlagtafel aktualisiert wurde.</target>
 			</trans-unit>
+
 			<trans-unit id="task.messageBoardInformation.messageBoardStorageUid">
 				<source>The message board storage uid:</source>
 				<target>Speicherort der Einträge:</target>
@@ -78,6 +86,36 @@
 				<source>The specified message board storage uid is not a valid page.</source>
 				<target>Der angegebene Speicherort der Einträge ist kein gültige Seite. </target>
 			</trans-unit>
+
+			<trans-unit id="task.messageBoardInformation.messageBoardPageUid">
+				<source>Page uid of the message board page</source>
+				<target state="tanslated">Seiten-Uid der Anschlagtafel</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.invalidPage.messageBoardPageUid">
+				<source>The specified page uid is invalid.</source>
+				<target>Die angegebene Seiten-Uid ist ungültig. </target>
+			</trans-unit>
+
+			<trans-unit id="task.messageBoardInformation.validtyPeriod">
+				<source>Validity period of the posts in days</source>
+				<target state="tanslated">Gültigkeitszeitraum der Posts in Tagen</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.invalid.validtyPeriod">
+				<source>The specified validity period is invalid.</source>
+				<target>Der angegebene Gültigkeitszeitraum ist ungültig. </target>
+			</trans-unit>
+
+
+
+			<trans-unit id="task.messageBoardInformation.siteIdentifier">
+				<source>Site identifier</source>
+				<target state="tanslated">Site Identifier (Eindeutige Kennung)</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.siteNotFound.siteIdentifier">
+				<source>Site with specified identifier not found.</source>
+				<target state="tanslated">Site mit dem angebebenen identifier wurde nicht gefunden.</target>
+			</trans-unit>
+
 			<trans-unit id="task.messageBoardInformation.hint.title">
 				<source>Hint</source>
 				<target>Hinweis</target>
@@ -90,15 +128,15 @@
 			
 			<trans-unit id="task.messageBoardInformation.infoMail.subject">
 				<source>Message board update</source>
-				<target>Neues auf dem Schwarzen Brett</target>
+				<target>Neues auf der Anschlagtafel</target>
 			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.infoMail.salutation">
 				<source>Hello %s</source>
 				<target>Hallo %s</target>
 			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.infoMail.teaser">
-				<source>On the message exists a new message or a exist message is updated.</source>
-				<target>Jemand hat auf dem Schwarzen Brett etwas Neues veröffentlicht oder seine bestehende Nachricht geändert.</target>
+				<source>Someone has posted something new on the &lt;a href="%s"&gt;bulletin board&lt;/a&gt; or changed their existing message.</source>
+				<target>Jemand hat "%s" auf der Anschlagtafel veröffentlicht oder seine bestehende Nachricht geändert.</target>
 			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.infoMail.body">
 				<source></source>

@@ -3,6 +3,7 @@ namespace Cylancer\MessageBoard\Controller;
 
 use Cylancer\MessageBoard\Domain\Model\Settings;
 use Cylancer\MessageBoard\Domain\Model\FrontendUser;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use Cylancer\MessageBoard\Domain\Repository\FrontendUserRepository;
@@ -15,7 +16,7 @@ use Cylancer\MessageBoard\Service\FrontendUserService;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2022 C. Gogolin <service@cylancer.net>
+ * (c) 2024 C. Gogolin <service@cylancer.net>
  *
  * @package Cylancer\MessageBoard\Controller
  */
@@ -38,7 +39,7 @@ class SettingsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         $this->frontendUserRepository = $frontendUserRepository;
     }
 
-    public function showAction(): void
+    public function showAction(): ResponseInterface
     {
         /** @var FrontendUser $u */
         $u = $this->frontendUserRepository->findByUid($this->frontendUserService->getCurrentUserUid());
@@ -47,6 +48,7 @@ class SettingsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
             $s->setInfoMailWhenMessageBoardChanged($u->getInfoMailWhenMessageBoardChanged());
             $this->view->assign('settings', $s);
         }
+        return $this->htmlResponse();
     }
 
     /**
