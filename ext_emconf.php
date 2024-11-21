@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = [
     'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => true,
-    'version' => '3.0.0',
+    'version' => '3.0.1',
     'constraints' => [
         'depends' => [
             'typo3' => '12.4.0-12.4.99',
@@ -32,6 +32,7 @@ $EM_CONF[$_EXTKEY] = [
 
 
 /* CHANGLOG: 
+        3.0.1 :: Fix missing flush the changes. 
         3.0.0 :: Update to TYPO3 12.4
         2.1.0 :: Add a expiry date / Update the UI.
         2.0.1 :: Fix the contact link. 

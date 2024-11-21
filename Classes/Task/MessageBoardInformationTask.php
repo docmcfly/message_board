@@ -191,7 +191,7 @@ class MessageBoardInformationTask extends AbstractTask
             foreach ($this->messageRepository->findAllExpired() as $msg) {
                 $this->messageRepository->remove($msg);
             }
-            //     $this->persistenceManager->persistAll();
+            $this->persistenceManager->persistAll();
 
 
             return true;
