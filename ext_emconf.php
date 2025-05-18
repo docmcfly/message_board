@@ -22,7 +22,7 @@ $EM_CONF[$_EXTKEY] = [
     'uploadfolder' => 0,
     'createDirs' => '',
     'clearCacheOnLoad' => true,
-    'version' => '4.0.1',
+    'version' => '4.0.2',
     'constraints' => [
         'depends' => [
             'typo3' => '13.4.0-13.4.99',
@@ -34,6 +34,7 @@ $EM_CONF[$_EXTKEY] = [
 
 
 /* CHANGLOG: 
+        4.0.2 :: FIX : Background task uses the wrong table name. 
         4.0.1 :: FIX : upgrade wizzard
         4.0.0 :: Update to TYPO3 13.4
         3.0.1 :: Fix missing flush the changes. 

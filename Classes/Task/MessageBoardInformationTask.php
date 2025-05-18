@@ -154,7 +154,7 @@ class MessageBoardInformationTask extends AbstractTask
 
             // UPDATE tx_messageboard_domain_model_message SET expiry_date = ADDDATE(timestamp, 30);
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages')->createQueryBuilder();
-            $queryBuilder->update('tx_messageboard_domain_model_message')
+            $queryBuilder->update('tx_cymessageboard_domain_model_message')
                 ->set('expiry_date', 'ADDDATE(timestamp, ' . $this->validtyPeriod . ' )', false)
                 ->where($queryBuilder->expr()->isNull('expiry_date'))
                 ->executeStatement();
