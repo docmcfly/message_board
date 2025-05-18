@@ -1,5 +1,5 @@
 <?php
-namespace Cylancer\MessageBoard\Domain\Model;
+namespace Cylancer\CyMessageboard\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -9,84 +9,47 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2024 C. Gogolin <service@cylancer.net>
+ * (c) 2025 C. Gogolin <service@cylancer.net>
  */
 class Message extends AbstractEntity
 {
 
-    /**
-     *
-     * @var string
-     */
-    protected $text = '';
+    protected ?string $text = '';
 
-    /**
-     *
-     * @var FrontendUser
-     */
-    protected $user = null;
+    protected ?FrontendUser $user = null;
 
-    /**
-     *
-     * @var bool
-     */
-    protected $changed = true;
+    protected bool $changed = true;
 
-    /**
-     *
-     * @var \DateTime $timestamp
-     */
-    protected $timestamp = null;
+    protected ?\DateTime $timestamp = null;
 
-    /**
-     *
-     * @var \DateTime $expiryDate
-     */
-    protected $expiryDate = null;
+    protected ?\DateTime $expiryDate = null;
 
-    public function setText(string $text): void
+    public function setText(?string $text): void
     {
         $this->text = $text;
     }
 
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     *
-     * @param FrontendUser $user
-     * @return void
-     */
-    public function setUser(FrontendUser $user): void
+    public function setUser(?FrontendUser $user): void
     {
         $this->user = $user;
     }
 
-    /**
-     *
-     * @return FrontendUser
-     */
     public function getUser(): ?FrontendUser
     {
         return $this->user;
     }
 
-    /**
-     *
-     * @return \DateTime
-     */
-    public function getTimestamp(): \DateTime
+    public function getTimestamp(): ?\DateTime
     {
         return $this->timestamp;
     }
 
-    /**
-     *
-     * @param \DateTime $timestamp
-     */
-    public function setTimestamp(\DateTime $timestamp): void
+    public function setTimestamp(?\DateTime $timestamp): void
     {
         $this->timestamp = $timestamp;
     }
@@ -99,25 +62,17 @@ class Message extends AbstractEntity
         return $this->expiryDate;
     }
 
-   public function setExpiryDate(\DateTime $expiryDate): void
+   public function setExpiryDate(?\DateTime $expiryDate): void
     {
         $this->expiryDate = $expiryDate;
     }
     
-    /**
-     *
-     * @return boolean
-     */
     public function getChanged(): bool
     {
         return $this->changed;
     }
 
-    /**
-     *
-     * @param boolean $changed
-     */
-    public function setChanged($changed): void
+    public function setChanged(bool $changed): void
     {
         $this->changed = $changed;
     }

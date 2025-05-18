@@ -116,6 +116,24 @@
 				<target state="tanslated">Site mit dem angebebenen identifier wurde nicht gefunden.</target>
 			</trans-unit>
 
+			<trans-unit id="task.messageBoardInformation.subject">
+				<source>Subject-Text of the informer mail</source>
+				<target>Betreff-Text der Info-Mail</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.subject.default">
+				<source>Message board is updated</source>
+				<target>Neues auf der Anschlagtafel</target>
+			</trans-unit>
+			<trans-unit id="task.messageBoardInformation.error.required.subject">
+				<source>The subject text is required.</source>
+				<target state="tanslated">Der Betreff-Text ist verpflichtend.</target>
+			</trans-unit>
+
+			<trans-unit id="task.messageBoardInformation.senderName">
+				<source>Sender name (If you leave this field blank, a default name will be used)</source>
+				<target>Absendername (Wenn Sie dieses Feld leer lassen, wird ein Standardname verwendet)</target>
+			</trans-unit>
+
 			<trans-unit id="task.messageBoardInformation.hint.title">
 				<source>Hint</source>
 				<target>Hinweis</target>
@@ -126,10 +144,6 @@
 			</trans-unit>
 
 			
-			<trans-unit id="task.messageBoardInformation.infoMail.subject">
-				<source>Message board update</source>
-				<target>Neues auf der Anschlagtafel</target>
-			</trans-unit>
 			<trans-unit id="task.messageBoardInformation.infoMail.salutation">
 				<source>Hello %s</source>
 				<target>Hallo %s</target>

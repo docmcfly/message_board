@@ -4,17 +4,17 @@
 </head>
 <body>
 <f:layout name="MessageBoardInfoMail"/>
-<f:section name="content"><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" />
+<f:section name="content"><f:translate key="LLL:EXT:cy_messageboard/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.salutation" arguments="{0:user.name}" />
 <f:variable name="text"><f:format.stripTags>{message.text -> f:format.crop(maxCharacters: 40, append='...')}</f:format.stripTags></f:variable>
 
-<f:format.raw><f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser"  arguments="{0:text}" /></f:format.raw>
-<f:uri.action linkAccessRestrictedPages="true"  absolute="true" pageUid="{pageUid}" noCache="true" />
+<f:format.raw><f:translate key="LLL:EXT:cy_messageboard/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.teaser"  arguments="{0:text}" /></f:format.raw>
+<f:uri.page linkAccessRestrictedPages="true"  absolute="true" pageUid="{pageUid}" noCache="true" />
 
-<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.body" />
+<f:translate key="LLL:EXT:cy_messageboard/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.body" />
 
-<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.footer" />
+<f:translate key="LLL:EXT:cy_messageboard/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.footer" />
  
-<f:translate key="LLL:EXT:message_board/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.regards" />
+<f:translate key="LLL:EXT:cy_messageboard/Resources/Private/Language/locallang.xlf:task.messageBoardInformation.infoMail.regards" />
 </f:section>
 </body></html>
 

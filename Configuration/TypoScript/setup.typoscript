@@ -1,17 +1,17 @@
 plugin.tx_messageboard {
 	view {
 		templateRootPaths {
-			0 = EXT:message_board/Resources/Private/Templates/
+			0 = EXT:cy_messageboard/Resources/Private/Templates/
 			1 = {$plugin.tx_messageboard.view.templateRootPath}
 		}
 
 		partialRootPaths {
-			0 = EXT:message_board/Resources/Private/Partials/
+			0 = EXT:cy_messageboard/Resources/Private/Partials/
 			1 = {$plugin.tx_messageboard.view.partialRootPath}
 		}
 
 		layoutRootPaths {
-			0 = EXT:message_board/Resources/Private/Layouts/
+			0 = EXT:cy_messageboard/Resources/Private/Layouts/
 			1 = {$plugin.tx_messageboard.view.layoutRootPath}
 		}
 

@@ -1,5 +1,5 @@
 <?php
-namespace Cylancer\MessageBoard\Domain\Model;
+namespace Cylancer\CyMessageboard\Domain\Model;
 
 /**
  * This file is part of the "message board" Extension for TYPO3 CMS.
@@ -7,31 +7,19 @@ namespace Cylancer\MessageBoard\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2024 C. Gogolin <service@cylancer.net>
+ * (c) 2025 C. Gogolin <service@cylancer.net>
  */
 class Settings
 {
 
-    /**
-     *
-     * @var boolean
-     */
-    protected $infoMailWhenMessageBoardChanged = true;
+    protected bool $infoMailWhenMessageBoardChanged = true;
 
-    /**
-     *
-     * @return boolean
-     */
-    public function getInfoMailWhenMessageBoardChanged()
+    public function getInfoMailWhenMessageBoardChanged(): bool
     {
         return $this->infoMailWhenMessageBoardChanged;
     }
 
-    /**
-     *
-     * @param boolean $b
-     */
-    public function setInfoMailWhenMessageBoardChanged(bool $b)
+    public function setInfoMailWhenMessageBoardChanged(bool $b): void
     {
         $this->infoMailWhenMessageBoardChanged = $b;
     }

@@ -1,7 +1,7 @@
 #
-# Table structure for table 'tx_messageboard_domain_model_message'
+# Table structure for table 'tx_cymessageboard_domain_model_message'
 #
-CREATE TABLE tx_messageboard_domain_model_message (
+CREATE TABLE tx_cymessageboard_domain_model_message (
 
 	user int(11) unsigned DEFAULT '0',
 	text MEDIUMTEXT, 

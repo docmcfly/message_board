@@ -1,5 +1,5 @@
 {
-	"name" : "cylancer/message_board",
+	"name" : "cylancer/cy_messageboard",
 	"type" : "typo3-cms-extension",
 	"license" : "GPL-2.0-or-later",
 	"description" : "A simple message board for the fe user",
@@ -12,16 +12,16 @@
 		}
 	],
 	"require" : {
-		"typo3/cms-core" : "^12.4"
+		"typo3/cms-core" : "^13.4"
 	},
 	"autoload" : {
 		"psr-4" : {
-			"Cylancer\\MessageBoard\\" : "Classes/"
+			"Cylancer\\CyMessageboard\\" : "Classes/"
 		}
 	},
 	"extra" : {
 		"typo3/cms" : {
-			"extension-key" : "messageboard"
+			"extension-key" : "cymessageboard"
 		}
 	}
 }

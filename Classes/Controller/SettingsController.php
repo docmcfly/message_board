@@ -1,42 +1,32 @@
 <?php
-namespace Cylancer\MessageBoard\Controller;
+namespace Cylancer\CyMessageboard\Controller;
 
-use Cylancer\MessageBoard\Domain\Model\Settings;
-use Cylancer\MessageBoard\Domain\Model\FrontendUser;
+use Cylancer\CyMessageboard\Domain\Model\Settings;
+use Cylancer\CyMessageboard\Domain\Model\FrontendUser;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
-use Cylancer\MessageBoard\Domain\Repository\FrontendUserRepository;
+use Cylancer\CyMessageboard\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use Cylancer\MessageBoard\Service\FrontendUserService;
- 
+use Cylancer\CyMessageboard\Service\FrontendUserService;
+
 /**
  * This file is part of the "MessageBoard" Extension for TYPO3 CMS.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * (c) 2024 C. Gogolin <service@cylancer.net>
+ * (c) 2025 C. Gogolin <service@cylancer.net>
  *
- * @package Cylancer\MessageBoard\Controller
  */
 class SettingsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
 
-    /** @var FrontendUserService */
-    private $frontendUserService = null;
-
-    /** @var PersistenceManager */
-    private $persistenceManager;
-
-    /** @var FrontendUserRepository */
-    private $frontendUserRepository = null;
-
-    public function __construct(FrontendUserService $frontendUserService, PersistenceManager $persistenceManager, FrontendUserRepository $frontendUserRepository)
-    {
-        $this->frontendUserService = $frontendUserService;
-        $this->persistenceManager = $persistenceManager;
-        $this->frontendUserRepository = $frontendUserRepository;
+    public function __construct(
+        private readonly FrontendUserService $frontendUserService,
+        private readonly PersistenceManager $persistenceManager,
+        private readonly FrontendUserRepository $frontendUserRepository
+    ) {
     }
 
     public function showAction(): ResponseInterface
@@ -51,10 +41,6 @@ class SettingsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         return $this->htmlResponse();
     }
 
-    /**
-     *
-     * @param Settings $settings
-     */
     public function saveAction(Settings $settings)
     {
         /** @var FrontendUser $u */

@@ -1,9 +1,21 @@
 <?php
+
+/**
+ *
+ * This file is part of the "Messageboard" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * (c) 2025 C. Gogolin <service@cylancer.net>
+ *       
+ */
+
 return [
     'ctrl' => [
-        'title' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message',
+        'title' => 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_db.xlf:tx_cymessageboard_domain_model_message',
         'label' => 'user',
-        'iconfile' => 'EXT:message_board/Resources/Public/Icons/tx_messageboard_domain_model_message.gif',
+        'iconfile' => 'EXT:cy_messageboard/Resources/Public/Icons/tx_cymessageboard_domain_model_message.gif',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -45,8 +57,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => 'tx_messageboard_domain_model_message',
-                'foreign_table_where' => 'AND {#tx_messageboard_domain_model_message}.{#pid}=###CURRENT_PID### AND {#tx_messageboard_domain_model_message}.{#sys_language_uid} IN (-1,0)',
+                'foreign_table' => 'tx_cymessageboard_domain_model_message',
+                'foreign_table_where' => 'AND {#tx_cymessageboard_domain_model_message}.{#pid}=###CURRENT_PID### AND {#tx_cymessageboard_domain_model_message}.{#sys_language_uid} IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -63,7 +75,7 @@ return [
             ],
         ],
         'text' => [
-            'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.text',
+            'label' => 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_db.xlf:tx_cymessageboard_domain_model_message.text',
             'config' => [
                 'type' => 'text',
                 'eval' => 'trim',
@@ -71,7 +83,7 @@ return [
             ],
         ],
         'timestamp' => [
-            'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.timestamp',
+            'label' => 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_db.xlf:tx_cymessageboard_domain_model_message.timestamp',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -82,7 +94,7 @@ return [
             ],
         ],
         'expiry_date' => [
-            'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.expiryDate',
+            'label' => 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_db.xlf:tx_cymessageboard_domain_model_message.expiryDate',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -93,7 +105,7 @@ return [
             ],
         ],
         'user' => [
-            'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.user',
+            'label' => 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_db.xlf:tx_cymessageboard_domain_model_message.user',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -104,7 +116,7 @@ return [
             ],
         ],
         'changed' => [
-            'label' => 'LLL:EXT:message_board/Resources/Private/Language/locallang_db.xlf:tx_messageboard_domain_model_message.changed',
+            'label' => 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_db.xlf:tx_cymessageboard_domain_model_message.changed',
             'config' => [
                 'type' => 'check',
                 'items' => [
