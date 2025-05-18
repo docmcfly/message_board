@@ -1,88 +1,87 @@
 <?php
-namespace Cylancer\MessageBoard\Task;
+namespace Cylancer\CyMessageboard\Task;
+
+use Cylancer\CyMessageboard\Domain\Model\Message;
+use Cylancer\CyMessageboard\Domain\Repository\FrontendUserRepository;
+use Cylancer\CyMessageboard\Service\FrontendUserService;
+use Cylancer\CyMessageboard\Domain\Model\FrontendUser;
+use Cylancer\CyMessageboard\Domain\Repository\MessageRepository;
 
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Symfony\Component\Mime\Address;
+
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use Cylancer\MessageBoard\Domain\Repository\MessageRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use Cylancer\MessageBoard\Domain\Model\Message;
-use Cylancer\MessageBoard\Domain\Repository\FrontendUserRepository;
-use Cylancer\MessageBoard\Service\FrontendUserService;
-use Cylancer\MessageBoard\Domain\Model\FrontendUser;
 use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
+use TYPO3\CMS\Core\Http\ServerRequest;
+
+/**
+ *
+ * This file is part of the "Messageboard" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * (c) 2025 C. Gogolin <service@cylancer.net>
+ *       
+ */
 
 class MessageBoardInformationTask extends AbstractTask
 {
 
 
-    // ------------------------------------------------------
-    // input fields
-    const MESSAGE_BOARD_STORAGE_UID = 'messageBoardStorageUid';
-    const MESSAGE_BOARD_PAGE_UID = 'messageBoardPageUid';
-    const VALIDITY_PERIOD = 'validtyPeriod';
+    public const MESSAGE_BOARD_STORAGE_UID = 'messageBoardStorageUid';
+    public const MESSAGE_BOARD_PAGE_UID = 'messageBoardPageUid';
+    public const VALIDITY_PERIOD = 'validtyPeriod';
+    public const SENDER_NAME = 'senderName';
+    public const SUBJECT = 'subject';
+    public const SITE_IDENTIFIER = 'siteIdentifier';
 
-    const SITE_IDENTIFIER = 'siteIdentifier';
-
-    /** @var int */
-    public $messageBoardStorageUid = 0;
-
-    /** @var int */
-    public $messageBoardPageUid = 0;
-
-    /** @var int */
-    public $validtyPeriod = 60;
-
-    /** @var string */
-    public $siteIdentifier = '';
-
+    public int $messageBoardStorageUid = 0; 
+    public int $messageBoardPageUid = 0; 
+    public int $validtyPeriod = 60; 
+    public string $senderName = ''; 
+    public string $subject = ''; 
+    public string $siteIdentifier = ''; 
 
     // ------------------------------------------------------
     // debug switch
-    const DISABLE_PERSISTENCE_MANAGER = false;
+    private const DISABLE_PERSISTENCE_MANAGER = false;
 
-    const EXTENSION_NAME = 'MessageBoard';
+    public const EXTENSION_NAME = 'MessageBoard';
 
     // ------------------------------------------------------
 
-    /**  @var FrontendUserService */
-    private $frontendUserService = null;
+    private ?FrontendUserService $frontendUserService = null;
 
-    /** @var FrontendUserRepository */
-    private $frontendUserRepository = null;
+    private ?FrontendUserRepository $frontendUserRepository = null;
 
-    /** @var MessageRepository  */
-    private $messageRepository = null;
+    private ?MessageRepository $messageRepository = null;
 
-    /** @var PageRepository */
-    private $pageRepository = null;
+    private ?PageRepository $pageRepository = null;
 
-    /** @var PersistenceManager  */
-    private $persistenceManager = null;
+    private ?PersistenceManager $persistenceManager = null; 
+    
 
-
-    private function initialize()
+    private function initialize(): void
     {
         $this->messageBoardStorageUid = intval($this->messageBoardStorageUid);
 
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
 
         $feUserStorageUids = [];
-        /**
-         *
-         * @var QueryBuilder $qb
-         */
+        
+        /** @var QueryBuilder $qb */
         $qb = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $s = $qb->select('uid')
             ->from('pages')
@@ -113,7 +112,7 @@ class MessageBoardInformationTask extends AbstractTask
         $this->frontendUserService = GeneralUtility::makeInstance(FrontendUserService::class, $this->frontendUserRepository);
     }
 
-    private function validate()
+    private function validate(): int
     {
         $valid = true;
 
@@ -128,7 +127,7 @@ class MessageBoardInformationTask extends AbstractTask
         return $valid;
     }
 
-    private function isPageUidValid(int $id)
+    private function isPageUidValid(int $id): bool
     {
         return $this->pageRepository->getPage($id) != null;
     }
@@ -147,7 +146,7 @@ class MessageBoardInformationTask extends AbstractTask
         return true;
     }
 
-    public function execute()
+    public function execute(): bool
     {
         $this->initialize();
 
@@ -200,17 +199,16 @@ class MessageBoardInformationTask extends AbstractTask
         }
     }
 
-    private function sendInfoMail(FrontendUser $user, Message $message)
+    private function sendInfoMail(FrontendUser $user, Message $message): void
     {
         if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-
 
             $fluidEmail = GeneralUtility::makeInstance(FluidEmail::class);
             $fluidEmail
                 ->setRequest($this->createRequest($this->siteIdentifier))
                 ->to(new Address($user->getEmail(), $user->getFirstName() . ' ' . $user->getLastName()))
-                ->from(new Address(MailUtility::getSystemFromAddress(), LocalizationUtility::translate('task.messageBoardInformation.updateMail.senderName', MessageBoardInformationTask::EXTENSION_NAME)))
-                ->subject(LocalizationUtility::translate('task.messageBoardInformation.infoMail.subject', MessageBoardInformationTask::EXTENSION_NAME))
+                ->from(new Address(MailUtility::getSystemFromAddress(), $this->senderName))
+                ->subject($this->subject)
                 ->format(FluidEmail::FORMAT_BOTH) // send HTML and plaintext mail
                 ->setTemplate('MessageBoardInfoMail')
                 ->assign('user', $user)
@@ -220,86 +218,97 @@ class MessageBoardInformationTask extends AbstractTask
             GeneralUtility::makeInstance(MailerInterface::class)->send($fluidEmail);
         }
     }
-
-
-
-    private function createRequest(string $siteIdentifier): RequestInterface
+    private function createRequest(string $siteIdentifier): ServerRequest
     {
         $serverRequestFactory = GeneralUtility::makeInstance(ServerRequestFactoryInterface::class);
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier($siteIdentifier);
         $serverRequest = $serverRequestFactory->createServerRequest('GET', $site->getBase())
-            ->withAttribute('applicationType', \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE)
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
             ->withAttribute('site', $site)
-            ->withAttribute('extbase', new \TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters());
-        $request = GeneralUtility::makeInstance(Request::class, $serverRequest);
-        //$GLOBALS['TYPO3_REQUEST'] = $request;
-        if (!isset($GLOBALS['TYPO3_REQUEST'])) {
-            $GLOBALS['TYPO3_REQUEST'] = $request;
-        }
-        return $request;
-    }
+            ->withAttribute('extbase', GeneralUtility::makeInstance(ExtbaseRequestParameters::class))
+        ;
+        return $serverRequest;
+    } 
 
-
-
-    /**
-     * This method returns the sleep duration as additional information
-     *
-     * @return string Information to display
-     */
     public function getAdditionalInformation(): string
     {
         return 'Message board storage uid: ' . $this->messageBoardStorageUid
             . ' Message board page uid: ' . $this->messageBoardPageUid
             . ' Validity period: ' . $this->validtyPeriod
+            . ' Subject: ' . $this->subject
             . ' Site identifier: ' . $this->siteIdentifier;
     }
 
-    /**
-     *
-     * @param string $key
-     * @throws \Exception
-     * @return number|string
-     */
-    public function get(string $key)
+    public function get(string $key): int|string
     {
         switch ($key) {
             case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
-                return $this->messageBoardStorageUid;
+                return intval($this->messageBoardStorageUid);
             case MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID:
-                return $this->messageBoardPageUid;
+                return intval($this->messageBoardPageUid);
             case MessageBoardInformationTask::VALIDITY_PERIOD:
-                return $this->validtyPeriod;
+                return intval($this->validtyPeriod);
             case MessageBoardInformationTask::SITE_IDENTIFIER:
                 return $this->siteIdentifier;
+            case MessageBoardInformationTask::SENDER_NAME:
+                return $this->senderName;
+            case MessageBoardInformationTask::SUBJECT:
+                return $this->subject;
             default:
                 throw new \Exception("Unknown key: $key");
         }
     }
 
-    /**
-     *
-     * @param string $key
-     * @param string|number $value
-     * @throws \Exception
-     */
-    public function set(string $key, $value)
+    public function set(array $data): void
     {
-        switch ($key) {
-            case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
-                $this->messageBoardStorageUid = $value;
-                break;
-            case MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID:
-                $this->messageBoardPageUid = $value;
-                break;
-            case MessageBoardInformationTask::VALIDITY_PERIOD:
-                $this->validtyPeriod = $value;
-                break;
-            case MessageBoardInformationTask::SITE_IDENTIFIER:
-                $this->siteIdentifier = $value;
-                break;
-            default:
-                throw new \Exception("Unknown key: $key");
+
+        foreach ([ // 
+            MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID,// 
+            MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID, // 
+            MessageBoardInformationTask::VALIDITY_PERIOD, // 
+            MessageBoardInformationTask::SENDER_NAME, // 
+            MessageBoardInformationTask::SUBJECT, // 
+            MessageBoardInformationTask::SITE_IDENTIFIER// 
+        ] as $key) {
+            $value = $data[$key];
+            switch ($key) {
+                case MessageBoardInformationTask::MESSAGE_BOARD_STORAGE_UID:
+                    $this->messageBoardStorageUid = intval($value);
+                    break;
+                case MessageBoardInformationTask::MESSAGE_BOARD_PAGE_UID:
+                    $this->messageBoardPageUid = intval($value);
+                    break;
+                case MessageBoardInformationTask::VALIDITY_PERIOD:
+                    $this->validtyPeriod = intval($value);
+                    break;
+                case MessageBoardInformationTask::SITE_IDENTIFIER:
+                    $this->siteIdentifier = $value;
+                    break;
+                case MessageBoardInformationTask::SUBJECT:
+                    $this->subject = $value;
+                    break;
+                case MessageBoardInformationTask::SENDER_NAME:
+                    $this->senderName = $value;
+                    break;
+                default:
+                    throw new \Exception("Unknown key: $key");
+            }
         }
+    }
+
+
+    /**
+     * 
+     * @deprecated remove if all instances with the correct types are saved.
+     * @return bool
+     */
+    public function save(): bool
+    {
+        $this->messageBoardStorageUid = intval($this->messageBoardStorageUid);
+        $this->messageBoardPageUid = intval($this->messageBoardPageUid);
+        $this->validtyPeriod = intval($this->validtyPeriod);
+        return parent::save();
+
     }
 }
 

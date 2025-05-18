@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
 	<file source-language="en" datatype="plaintext" original="messages" date="2020-03-18T15:36:48Z" product-name="participants">
-		<header/>
+		<header />
 		<body>
 			<trans-unit id="plugin.name">
 				<source>Plugin for the message board</source>
+				<target>Die Anschlagtafel</target>
 			</trans-unit>
 			<trans-unit id="plugin.description">
 				<source>This plugin displays the message board.</source>
+				<target>Dieses Plugin zeigt die Anschlagtafel.</target>
 			</trans-unit>
-			
-			
-			
+
+
 			<trans-unit id="flexforms_general.title">
-				<source>Common settings</source>
+				<source>Settings</source>
+				<target state="tanslated">Einstellungen</target>
 			</trans-unit>
 			<trans-unit id="flexforms_general.settings.userLink.title">
 				<source>Users list link</source>
+				<target state="tanslated">Link zur Nutzerliste</target>
 			</trans-unit>
 			<trans-unit id="flexforms_general.settings.onlineTime.title">
 				<source>Online time (days)</source>
+				<target state="tanslated">Onlinezeit (Tage)</target>
 			</trans-unit>
-			
+
 		</body>
 	</file>
 </xliff>

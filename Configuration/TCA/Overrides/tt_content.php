@@ -1,32 +1,15 @@
 <?php
 
-call_user_func(
-    function ()
-    {
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            'MessageBoard',
-            'board',
-            'LLL:EXT:message_board/Resources/Private/Language/locallang_be_board.xlf:plugin.name',
-            // 'LLL:EXT:message_board/Resources/Private/Language/locallang_be_board.xlf:plugin.description',
-            'EXT:message_board/Resources/Public/Icons/messageboard_plugin_board.svg'
-            );
+/**
+ *
+ * This file is part of the "Messageboard" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * (c) 2025 C. Gogolin <service@cylancer.net>
+ *       
+ */
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            'MessageBoard',
-            'settings',
-            'LLL:EXT:message_board/Resources/Private/Language/locallang_be_settings.xlf:plugin.name',
-            // 'LLL:EXT:message_board/Resources/Private/Language/locallang_be_settings.xlf:plugin.description',
-            'EXT:message_board/Resources/Public/Icons/messageboard_plugin_settings.svg'
-            
-            );
-        
-        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['messageboard_board'] = 'pi_flexform';
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-            // plugin signature: <extension key without underscores> '_' <plugin name in lowercase>
-            'messageboard_board',
-            // Flexform configuration schema file
-            'FILE:EXT:message_board/Configuration/FlexForms/MessageBoard.xml'
-            );
-        
-}
-);
+$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['cyMessageboard']
+    = 'LLL:EXT:cy_messageboard/Resources/Private/Language/locallang_be.xlf:plugins.group.cyMessageboard.name';
