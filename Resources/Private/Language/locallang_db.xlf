@@ -18,6 +18,9 @@
 			<trans-unit id="tx_cymessageboard_domain_model_message.expiryDate">
 				<source>Expiry date</source>
 			</trans-unit>
+			<trans-unit id="tx_cymessageboard_domain_model_message.changed">
+				<source>Record is changed</source>
+			</trans-unit>
 			<trans-unit id="tx_cymessageboard_board.name">
 				<source>Message board</source>
 			</trans-unit>

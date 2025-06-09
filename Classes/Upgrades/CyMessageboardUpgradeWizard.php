@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Cylancer\CyMessageboard\Upgrades;
 
 
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +22,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
  *
  * (c) 2025 C. Gogolin <service@cylancer.net>
  *       
- */ 
+ */
 
 #[UpgradeWizard('cymessageboard_cymessageboardUpgradeWizard')]
 final class CyMessageboardUpgradeWizard implements UpgradeWizardInterface
@@ -50,20 +51,24 @@ final class CyMessageboardUpgradeWizard implements UpgradeWizardInterface
 
     public function executeUpdate(): bool
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connectionPool
-            ->getConnectionForTable('tx_cymessageboard_domain_model_message')
-            ->prepare('INSERT INTO `tx_cymessageboard_domain_model_message` '
-                . '( `uid`, `pid`, `tstamp`, `crdate`, `sys_language_uid`, `l10n_parent`, `l10n_state`, '
-                . '`l10n_diffsource`, `t3ver_oid`, `t3ver_wsid`, `t3ver_state`, `t3ver_stage`, `user`, '
-                . '`text`, `timestamp`, `changed`, `expiry_date`)'
-                . ' SELECT '
-                . ' `uid`, `pid`, `tstamp`, `crdate`, `sys_language_uid`, `l10n_parent`, `l10n_state`, '
-                . '`l10n_diffsource`, `t3ver_oid`, `t3ver_wsid`, `t3ver_state`, `t3ver_stage`, `user`, '
-                . '`text`, `timestamp`, `changed`, `expiry_date`'
-                . ' FROM `tx_messageboard_domain_model_message`')->executeStatement();
+        try {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $connectionPool
+                ->getConnectionForTable('tx_cymessageboard_domain_model_message')
+                ->prepare('INSERT INTO `tx_cymessageboard_domain_model_message` '
+                    . '( `uid`, `pid`, `tstamp`, `crdate`, `sys_language_uid`, `l10n_parent`, `l10n_state`, '
+                    . '`l10n_diffsource`, `t3ver_oid`, `t3ver_wsid`, `t3ver_state`, `t3ver_stage`, `user`, '
+                    . '`text`, `timestamp`, `changed`, `expiry_date`)'
+                    . ' SELECT '
+                    . ' `uid`, `pid`, `tstamp`, `crdate`, `sys_language_uid`, `l10n_parent`, `l10n_state`, '
+                    . '`l10n_diffsource`, `t3ver_oid`, `t3ver_wsid`, `t3ver_state`, `t3ver_stage`, `user`, '
+                    . '`text`, `timestamp`, `changed`, `expiry_date`'
+                    . ' FROM `tx_messageboard_domain_model_message`')->executeStatement();
 
-        return true;
+            return true;
+        } catch (TableNotFoundException $e) {
+            return true;
+        }
     }
 
     /**
@@ -71,22 +76,25 @@ final class CyMessageboardUpgradeWizard implements UpgradeWizardInterface
      */
     public function updateNecessary(): bool
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        return $connectionPool
-            ->getConnectionForTable('tx_cymessageboard_domain_model_message')
-            ->count(
-                '*',
-                'tx_cymessageboard_domain_model_message',
-                [],
-            ) == 0
-            && $connectionPool
-                ->getConnectionForTable('tx_messageboard_domain_model_message')
+        try {
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            return $connectionPool
+                ->getConnectionForTable('tx_cymessageboard_domain_model_message')
                 ->count(
                     '*',
-                    'tx_messageboard_domain_model_message',
+                    'tx_cymessageboard_domain_model_message',
                     [],
-                ) > 0
-        ;
+                ) == 0
+                && $connectionPool
+                    ->getConnectionForTable('tx_messageboard_domain_model_message')
+                    ->count(
+                        '*',
+                        'tx_messageboard_domain_model_message',
+                        [],
+                    ) > 0;
+        } catch (TableNotFoundException $e) {
+            return false;
+        }
     }
 
     /**
