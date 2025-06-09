@@ -23,6 +23,10 @@
 				<source>Expiry date</source>
 				<target state="tanslated">Gültigkeitsdatum</target>
 			</trans-unit>
+			<trans-unit id="tx_cymessageboard_domain_model_message.changed">
+				<source>Record is changed</source>
+				<target state="tanslated">Inhalt wurde geändert</target>
+			</trans-unit>
 			<trans-unit id="tx_cymessageboard_board.name">
 				<source>Message board</source>
 				<target state="tanslated">Anschlagtafel</target>
